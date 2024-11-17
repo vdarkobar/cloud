@@ -21,44 +21,44 @@
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup1.sh)"
 ```
-### *Debian LXC <a href="https://www.debian.org/index.html"> * </a>*:
+### 2. *Debian LXC <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup2.sh)"
 ```
 
 </br>
 
-### *Bastion/Jump <a href="https://www.debian.org/index.html"> * </a>*:
+### 3. *Bastion/Jump <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup3.sh)"
 ```
 
-### *Unbound (opt. Pi-Hole)  <a href="https://www.debian.org/index.html"> * </a>*:
+### 4. *Unbound (opt. Pi-Hole)  <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup4.sh)"
 ```
 
-### *Samba file server <a href="https://www.debian.org/index.html"> * </a>*:
+### 5. *Samba file server <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup5.sh)"
 ```
 
-### *Nginx Proxy Manager (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
+### 6. *Nginx Proxy Manager (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup6.sh)"
 ```
 
-### *Nextcloud <a href="https://www.debian.org/index.html"> * </a>*:
+### 7. *Nextcloud <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
 ```
 
-### *Nextcloud (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
+### 8. *Nextcloud (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
 ```
 
-### *Vaultwarden (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
+### 9. *Vaultwarden (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
 ```
