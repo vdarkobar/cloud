@@ -7,10 +7,10 @@
 <br>
 
 <p align="center">
-  <b>Resources:</b><br>
+  <b>First:</b><br>
   <br><br>
-  <a href="https://github.com/vdarkobar/WordPress#wordpress">Cloudflare</a> | 
-  <a href="https://github.com/vdarkobar/NextCloud#nextcloud">Proxmox VE</a> | 
+  Add domain name to <a href="https://github.com/vdarkobar/WordPress#wordpress">Cloudflare</a>, 
+  install and configure <a href="https://github.com/vdarkobar/NextCloud#nextcloud">ProxmoxVE</a> and 
   <a href="https://github.com/vdarkobar/Bitwarden#bitwarden">Proxmx Backup Server</a>
   <br><br>
 </p> 
