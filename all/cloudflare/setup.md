@@ -5,7 +5,7 @@
   
 ## Cloudflare
   
-Login to <a href="https://dash.cloudflare.com/">CloudFlare</a> and point your root domain (example.com) to your WAN IP using an A record.  
+Login to <a href="https://dash.cloudflare.com/">Cloudflare</a> and point your root domain (example.com) to your WAN IP using an A record.  
 ```
     A | example.com | YOUR WAN IP
 ```
