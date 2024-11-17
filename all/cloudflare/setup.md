@@ -10,7 +10,7 @@ Login to <a href="https://dash.cloudflare.com/">Cloudflare</a> and point your ro
     A | example.com | YOUR WAN IP
 ```
 <p align="center">
-  <img src="https://github.com/vdarkobar/misc/blob/main/A-record.webp">
+  <img src="https://github.com/vdarkobar/cloud/blob/main/misc/A-record.webp">
 </p>
   
 Add individual *subdomains*, for all services, pointing to your root domain (@ for the host).  
