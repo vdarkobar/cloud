@@ -52,4 +52,5 @@ Security:
   Challenge Passage: 30 Minutes  
   Browser Integrity Check: ON  
 </pre>
-  
+
+### *<a href="https://dash.cloudflare.com/profile/api-tokens">CloudFlare Global API Key</a>:*
