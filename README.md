@@ -12,11 +12,10 @@
   <a href="https://github.com/vdarkobar/Bitwarden#bitwarden">Proxmx Backup Server</a>.</i>i>
   <br><br>
 </p> 
-
-</br>
-
+  
+  
 <p align="center">
-<i>Run script(s)</i>>
+<i>Run script(s)</i>
 </p> 
 
 </br>
