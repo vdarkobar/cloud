@@ -5,9 +5,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/vdarkobar/NextCloud#nextcloud">Proxmox VE</a> |
-  <a href="https://github.com/vdarkobar/Bitwarden#bitwarden">Proxmx Backup Server</a> |
-  <a href="https://github.com/vdarkobar/WordPress#wordpress">Cloudflare</a>
+  <b>Resources:</b><br>
+  <a href="https://github.com/vdarkobar/WordPress#wordpress">Cloudflare</a> | 
+  <a href="https://github.com/vdarkobar/NextCloud#nextcloud">Proxmox VE</a> | 
+  <a href="https://github.com/vdarkobar/Bitwarden#bitwarden">Proxmx Backup Server</a>
   <br><br>
 </p> 
 
