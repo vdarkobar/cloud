@@ -6,6 +6,7 @@
 
 <p align="center">
   <b>Resources:</b><br>
+  <br><br>
   <a href="https://github.com/vdarkobar/WordPress#wordpress">Cloudflare</a> | 
   <a href="https://github.com/vdarkobar/NextCloud#nextcloud">Proxmox VE</a> | 
   <a href="https://github.com/vdarkobar/Bitwarden#bitwarden">Proxmx Backup Server</a>
