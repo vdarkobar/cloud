@@ -18,7 +18,7 @@ Add individual *subdomains*, for all services, pointing to your root domain (@ f
     CNAME | * | @ (or example.com)
 ```
 <p align="center">
-  <img src="https://github.com/vdarkobar/misc/blob/main/sub-domain.webp">
+  <img src="https://github.com/vdarkobar/cloud/blob/main/misc/sub-domain.webp">
 </p>
   
 Add for non-WWW to WWW redirect.  
@@ -26,7 +26,7 @@ Add for non-WWW to WWW redirect.
     CNAME | www | YOUR WAN IP
 ```
 <p align="center">
-  <img src="https://github.com/vdarkobar/misc/blob/main/www.webp">
+  <img src="https://github.com/vdarkobar/cloud/blob/main/misc/www.webp">
 </p>
   
 ### *Website settings*:
