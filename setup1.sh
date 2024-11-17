@@ -95,7 +95,7 @@ done
 
 # Run virt-customize commands
 virt-customize -a "$TEMP_DIR/$IMAGE_NAME" \
-    --install qemu-guest-agent,sudo,openssh-server \
+    --install qemu-guest-agent,sudo,openssh-server,wget \
     --run-command "echo $HOSTNAME > /etc/hostname" \
     --run-command "sed -i 's/\<localhost\>/$HOSTNAME/g' /etc/hosts" \
     --run-command "useradd -m -s /bin/bash $username" \
