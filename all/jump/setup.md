@@ -228,5 +228,3 @@ ssh-copy-id -i ~/.ssh/id_ed25519.pub user@ip
 ```bash
 ssh user@ip
 ```
-<a href="https://github.com/vdarkobar/Home-Cloud/blob/main/shared/Bastion.md#bastion">top of the page</a>
-
