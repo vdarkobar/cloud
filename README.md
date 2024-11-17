@@ -8,8 +8,8 @@
 
 <p align="center">
   <i>Add domain name to <a href="https://github.com/vdarkobar/cloud/blob/main/all/cloudflare/setup.md">Cloudflare</a>. 
-  Install and configure <a href="https://github.com/vdarkobar/NextCloud#nextcloud">Proxmox Virtual Environment</a> and 
-  <a href="https://github.com/vdarkobar/Bitwarden#bitwarden">Proxmx Backup Server</a>.</i>
+  Install and configure <a href="https://github.com/vdarkobar/cloud/blob/main/all/pve/setup.md">Proxmox Virtual Environment</a> and 
+  <a href="https://github.com/vdarkobar/cloud/blob/main/all/pbs/setup.md">Proxmx Backup Server</a>.</i>
   <br><br>
 </p> 
   
