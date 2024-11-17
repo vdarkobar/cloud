@@ -23,7 +23,7 @@ Write changes to the disk > Yes > Continue
 ```
 - Add SSH Server  
   
-### Login to <a href="https://github.com/vdarkobar/cloud/blob/main/all/jump/setup.md</a> and copy ID to VM:
+### Login to <a href="https://github.com/vdarkobar/cloud/blob/main/all/jump/setup.md"</a> and copy ID to VM:
 ```bash
 ssh-copy-id -i ~/.ssh/id_ed25519.pub user@debiantemplate
 ```
