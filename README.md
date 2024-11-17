@@ -4,9 +4,12 @@
   <img src="https://github.com/vdarkobar/cloud/blob/main/misc/infrastructure_small.webp">
 </p>
 
-<p style="text-align:center;">Text with basic formatting applied</p>
-
-
+<p align="center">
+  <a href="https://github.com/vdarkobar/NextCloud#nextcloud">Proxmox VE</a> |
+  <a href="https://github.com/vdarkobar/Bitwarden#bitwarden">Proxmx Backup Server</a> |
+  <a href="https://github.com/vdarkobar/WordPress#wordpress">Cloudflare</a>
+  <br><br>
+</p> 
 
 </br>
 
