@@ -14,7 +14,7 @@
 </p> 
   
 <p align="center">
-<i>Run script(s)</i>
+<i>Run script(s) inside a VM or LXC</i>
 </p> 
 
 </br>
