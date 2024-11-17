@@ -29,4 +29,27 @@ Add for non-WWW to WWW redirect.
   <img src="https://github.com/vdarkobar/misc/blob/main/www.webp">
 </p>
   
-#### Site settings:  
+### *Website settings*:
+<pre>
+SSL/TLS Mode - Full (strict)  
+
+Edge Certificates:  
+  Always Use HTTPS: ON  
+  HTTP Strict Transport Security (HSTS): Enable
+  - Max Age Header (max-age) 6 months
+  - Apply HSTS policy to subdomains: ON
+  - Preload: OFF(?)
+  - No-Sniff Header: ON
+  Minimum TLS Version: 1.2  
+  Opportunistic Encryption: ON  
+  TLS 1.3: ON  
+  Automatic HTTPS Rewrites: ON  
+  Certificate Transparency Monitoring: ON   
+  
+Security:
+  Bot Fight Mode: ON 
+  Security Level: Medium  
+  Challenge Passage: 30 Minutes  
+  Browser Integrity Check: ON  
+</pre>
+  
