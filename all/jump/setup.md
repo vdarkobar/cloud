@@ -228,3 +228,12 @@ ssh-copy-id -i ~/.ssh/id_ed25519.pub user@ip
 ```bash
 ssh user@ip
 ```
+
+Copy file with *rsync*:
+```
+sudo rsync -az file.name  user@ip:~/
+```
+  
+```
+ssh user@ip
+```
