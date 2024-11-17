@@ -53,4 +53,4 @@ Security:
   Browser Integrity Check: ON  
 </pre>
 
-### *<a href="https://dash.cloudflare.com/profile/api-tokens">CloudFlare Global API Key</a>:*
+### *<a href="https://dash.cloudflare.com/profile/api-tokens">CloudFlare Global API Key</a>*
