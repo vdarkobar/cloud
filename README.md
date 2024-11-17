@@ -62,7 +62,7 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/se
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup8.sh)"
 ```
 
-### 9. *Vaultwarden (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
+### 9. *Vaultwarden (Docker) <a href="https://github.com/vdarkobar/cloud/blob/main/all/vault-d/setup.md"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup9.sh)"
 ```
