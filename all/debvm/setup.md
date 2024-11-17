@@ -23,4 +23,4 @@ Write changes to the disk > Yes > Continue
 ```
 > *(VM > Hardware > Hard Disk > Disk Action > Resize)*  
   
-### *Follow these steps used to configure <a href="https://github.com/vdarkobar/cloud/blob/main/all/debvm/step-by-step.md">Debian Server Template</a>*
+### *Follow <a href="https://github.com/vdarkobar/cloud/blob/main/all/debvm/step-by-step.md">these</a> steps used to configure Debian Server Template*
