@@ -7,7 +7,7 @@
 *Reverse Proxy for all of your Services!*  
 
 <p align="center">
-  <img src="https://github.com/vdarkobar/Home-Cloud/blob/main/shared/reverse-proxy.png">
+  <img src="https://github.com/vdarkobar/cloud/blob/main/misc/reverse-proxy.png">
 </p>
   
 ---  
