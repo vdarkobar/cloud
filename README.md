@@ -23,7 +23,7 @@
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup1.sh)"
 ```
-### 2. *Debian LXC <a href="https://www.debian.org/index.html"> * </a>*:
+### 2. *Debian LXC <a href="https://github.com/vdarkobar/cloud/blob/main/all/debct/setup.md"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup2.sh)"
 ```
