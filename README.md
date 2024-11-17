@@ -52,7 +52,7 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/se
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup6.sh)"
 ```
 
-### 7. *Nextcloud <a href="https://www.debian.org/index.html"> * </a>*:
+### 7. *Nextcloud <a href="https://github.com/vdarkobar/cloud/blob/main/all/nc/setup.md"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup7.sh)"
 ```
