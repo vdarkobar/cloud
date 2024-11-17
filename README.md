@@ -20,7 +20,7 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/he
 ### *Bastion/Jump <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
-```  
+```
 
 ### *Unbound (opt. Pi-Hole)  <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
