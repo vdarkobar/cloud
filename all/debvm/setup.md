@@ -1,5 +1,5 @@
 <p align="left">
-  <a href="https://github.com/vdarkobar/cloud/blob/main/README.md#self-hosted-homelab-cloud">back</a>
+  <a href="https://github.com/vdarkobar/cloud/tree/main?tab=readme-ov-file#self-hosted-homelab-cloud">back</a>
   <br>
 </p> 
   
