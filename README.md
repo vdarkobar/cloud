@@ -47,7 +47,7 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/he
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
 ```
 
-### *Vaultwarden (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
+#### *Vaultwarden (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
 ```
