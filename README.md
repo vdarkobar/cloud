@@ -17,7 +17,7 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/he
 
 </br>
 
-### *Jump <a href="https://www.debian.org/index.html"> * </a>*:
+### *Bastion/Jump <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
 ```
