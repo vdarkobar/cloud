@@ -42,7 +42,7 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/se
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup4.sh)"
 ```
 
-### 5. *Samba file server <a href="https://www.debian.org/index.html"> * </a>*:
+### 5. *Samba file server <a href="https://github.com/vdarkobar/cloud/blob/main/all/samba/setup.md"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup5.sh)"
 ```
