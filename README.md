@@ -4,7 +4,9 @@
   <img src="https://github.com/vdarkobar/cloud/blob/main/misc/infrastructure_small.webp">
 </p>
 
-<p style="text-align:center;"><a href="https://example.com">Click 1</a><a href="https://example.com">Click 2</a><a href="https://example.com">Click 3</a></p>
+<p style="text-align:center;">Text with basic formatting applied</p>
+
+
 
 </br>
 
