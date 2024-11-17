@@ -4,7 +4,7 @@
   <img src="https://github.com/vdarkobar/cloud/blob/main/misc/infrastructure_small.webp">
 </p>
 
----
+</br>
 
 ### *Debian VM <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
