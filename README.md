@@ -17,11 +17,11 @@
 
 ### *Debian VM <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup1.sh)"
 ```
 ### *Debian LXC <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup1.sh)"
 ```
 
 </br>
