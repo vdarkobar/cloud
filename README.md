@@ -14,3 +14,47 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/he
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
 ```
+
+</br>
+
+### *Jump <a href="https://www.debian.org/index.html"> * </a>*:
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+```
+
+### *Unbound (opt. Pi-Hole)  <a href="https://www.debian.org/index.html"> * </a>*:
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+```
+
+### *Samba file server <a href="https://www.debian.org/index.html"> * </a>*:
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+```
+
+### *Nginx Proxy Manager (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+```
+
+### *Nextcloud <a href="https://www.debian.org/index.html"> * </a>*:
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+```
+
+### *Nextcloud (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+```
+
+### *Vaultwarden (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+```
+
+
+
+
+
+
+
