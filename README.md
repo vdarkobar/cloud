@@ -47,7 +47,7 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/se
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup5.sh)"
 ```
 
-### 6. *Nginx Proxy Manager (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
+### 6. *Nginx Proxy Manager (Docker) <a href="https://github.com/vdarkobar/cloud/blob/main/all/npm-d/setup.md"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup6.sh)"
 ```
