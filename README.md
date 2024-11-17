@@ -16,7 +16,7 @@
 </br>
 
 <p align="center">
-Run script(s)
+<i>Run script(s)</i>>
 </p> 
 
 </br>
