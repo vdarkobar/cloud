@@ -3,6 +3,7 @@
   <br>
 </p> 
   
+## Cloudflare
   
 Login to <a href="https://dash.cloudflare.com/">CloudFlare</a> and point your root domain (example.com) to your WAN IP using an A record.  
 ```
