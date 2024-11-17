@@ -326,7 +326,3 @@ GRUB_CMDLINE_LINUX_DEFAULT="${GRUB_CMDLINE_LINUX_DEFAULT} intel_iommu=on"
 run > dmesg | grep -e DMAR -e IOMMU (# returns > ... 0.541356] DMAR: IOMMU enabled)
 run > find /sys/kernel/iommu_groups/ -type l (# returns > /sys/kernel/iommu_groups/17/devices/0000:00:04.0 ...)
 --->
-
-<p align="center">
-<a href="https://github.com/vdarkobar/Home-Cloud/blob/main/shared/ProxMoxHowTo.md">top of the page</a>
-</p>
