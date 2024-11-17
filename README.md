@@ -4,7 +4,7 @@
   <img src="https://github.com/vdarkobar/cloud/blob/main/misc/infrastructure_small.webp">
 </p>
 
-<br><br>
+<br>
 
 <p align="center">
   <b>Resources:</b><br>
