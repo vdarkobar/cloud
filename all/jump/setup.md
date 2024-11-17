@@ -7,7 +7,7 @@
 SSH connectivity to all of the VMs
 
 <p align="center">
-  <img src="https://github.com/vdarkobar/Home-Cloud/blob/main/shared/bastion.webp">
+  <img src="https://github.com/vdarkobar/cloud/blob/main/misc/bastion.webp">
 </p>
   
 > *Create <a href="https://github.com/vdarkobar/cloud/blob/main/all/pve/setup.md">Proxmox</a> VM: (1CPU/1GBRAM/16GBHDD) using <a href="https://www.debian.org/">Debian server</a>. Add SSH Server during installation.*  
