@@ -9,8 +9,14 @@
 <p align="center">
   Add domain name to <a href="https://github.com/vdarkobar/WordPress#wordpress">Cloudflare</a>. 
   Install and configure <a href="https://github.com/vdarkobar/NextCloud#nextcloud">Proxmox Virtual Environment</a> and 
-  <a href="https://github.com/vdarkobar/Bitwarden#bitwarden">Proxmx Backup Server</a>. Run script(s).
+  <a href="https://github.com/vdarkobar/Bitwarden#bitwarden">Proxmx Backup Server</a>.
   <br><br>
+</p> 
+
+</br>
+
+<p align="center">
+Run script(s)
 </p> 
 
 </br>
