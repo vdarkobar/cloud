@@ -22,7 +22,5 @@ Return to the partitioning menu > No > Continue
 Write changes to the disk > Yes > Continue
 ```
 > *(VM > Hardware > Hard Disk > Disk Action > Resize)*  
-
-<br>
-
-## *Follow these steps used to configure <a href="https://github.com/vdarkobar/cloud/blob/main/all/debvm/step-by-step.md">Debian Server Template</a>*
+  
+### *Follow these steps used to configure <a href="https://github.com/vdarkobar/cloud/blob/main/all/debvm/step-by-step.md">Debian Server Template</a>*
