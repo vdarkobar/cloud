@@ -13,7 +13,6 @@
   <br><br>
 </p> 
   
-  
 <p align="center">
 <i>Run script(s)</i>
 </p> 
@@ -55,22 +54,17 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/se
 
 ### 7. *Nextcloud <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup7.sh)"
 ```
 
 ### 8. *Nextcloud (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup8.sh)"
 ```
 
 ### 9. *Vaultwarden (Docker) <a href="https://www.debian.org/index.html"> * </a>*:
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debvm/setup.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup9.sh)"
 ```
-
-
-
-
-
 
 
