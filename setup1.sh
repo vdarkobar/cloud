@@ -96,7 +96,7 @@ done
 
 # Run virt-customize commands
 virt-customize -a "$TEMP_DIR/$IMAGE_NAME" \
-    --install qemu-guest-agent,sudo,openssh-server,wget \
+    --install qemu-guest-agent,sudo,wget,isc-dhcp-client ifupdown net-tools nano less locales man-db manpages tasksel apt-utils cron logrotate openssl gnupg strace gdb gcc make build-essential bsdmainutils bsdutils file bash-completion dmidecode ethtool rsyslog openssh-server \
     --run-command "echo $HOSTNAME > /etc/hostname" \
     --run-command "sed -i 's/\<localhost\>/$HOSTNAME/g' /etc/hosts" \
     --run-command "useradd -m -s /bin/bash $username" \
@@ -104,6 +104,7 @@ virt-customize -a "$TEMP_DIR/$IMAGE_NAME" \
     --run-command "usermod -aG sudo $username" \
     --run-command "passwd -l root" \
     --run-command "sudo truncate -s 0 /etc/machine-id"
+    #--install qemu-guest-agent,sudo,openssh-server,wget \
 
 # Verify storage space
 image_size=$(stat -f --format="%s" "$TEMP_DIR/$IMAGE_NAME")
