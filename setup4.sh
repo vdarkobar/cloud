@@ -931,8 +931,39 @@ echo -e "${GREEN} Preparing Unbound configuration file:${NC} unbound.conf"
 sleep 0.5 # delay for 0.5 seconds
 echo
 
+##############################
+
 # Extract the domain name from /etc/resolv.conf
-DOMAIN_NAME_LOCAL=$(grep '^domain' /etc/resolv.conf | awk '{print $2}')
+#DOMAIN_NAME_LOCAL=$(grep '^domain' /etc/resolv.conf | awk '{print $2}')
+
+##############################
+
+DOMAIN_NAME_LOCAL=$(awk -F' ' '/^domain/ {print $2; exit}' /etc/resolv.conf)
+if [[ -n "$DOMAIN_NAME_LOCAL" ]]; then
+    echo -e "${GREEN} Domain name found using:${NC} awk (domain line)"
+else
+    # Method 2: Using sed
+    DOMAIN_NAME_LOCAL=$(sed -n 's/^domain //p' /etc/resolv.conf)
+    if [[ -n "$DOMAIN_NAME_LOCAL" ]]; then
+        echo -e "${GREEN} Domain name found using:${NC} sed (domain line)"
+    else
+        # Backup: Check the 'search' line
+        DOMAIN_NAME_LOCAL=$(awk -F' ' '/^search/ {print $2; exit}' /etc/resolv.conf)
+        if [[ -n "$DOMAIN_NAME_LOCAL" ]]; then
+            echo -e "${GREEN} Domain name found using:${NC} awk (search line)"
+        else
+            DOMAIN_NAME_LOCAL=$(sed -n 's/^search //p' /etc/resolv.conf)
+            if [[ -n "$DOMAIN_NAME_LOCAL" ]]; then
+                echo -e "${GREEN} Domain name found using:${NC} sed (search line)"
+            else
+                echo -e "${RED} Domain name not found using available methods .${NC}"
+                exit 1
+            fi
+        fi
+    fi
+fi
+
+##############################
 
 # Check if the domain name was found
 if [ -z "$DOMAIN_NAME_LOCAL" ]; then
