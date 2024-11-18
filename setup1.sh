@@ -96,7 +96,7 @@ done
 
 # Run virt-customize commands
 virt-customize -a "$TEMP_DIR/$IMAGE_NAME" \
-    --install qemu-guest-agent,sudo,wget,isc-dhcp-client ifupdown net-tools nano less locales man-db manpages tasksel apt-utils cron logrotate openssl gnupg strace gdb gcc make build-essential bsdmainutils bsdutils file bash-completion dmidecode ethtool rsyslog openssh-server \
+    --install qemu-guest-agent,sudo,wget,isc-dhcp-client,ifupdown,net-tools,nano,less,locales,man-db,manpages,tasksel,apt-utils,cron,logrotate,openssl,gnupg,strace,gdb,gcc,make,build-essential,bsdmainutils,bsdutils,file,bash-completion,dmidecode,ethtool,rsyslog,openssh-server \
     --run-command "echo $HOSTNAME > /etc/hostname" \
     --run-command "sed -i 's/\<localhost\>/$HOSTNAME/g' /etc/hosts" \
     --run-command "useradd -m -s /bin/bash $username" \
