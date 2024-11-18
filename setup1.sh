@@ -138,6 +138,7 @@ qm importdisk "$VMID" "$TEMP_DIR/$IMAGE_NAME" "$STORAGE"
 qm set "$VMID" --scsi0 "$STORAGE:vm-$VMID-disk-0,discard=on,ssd=1,cache=none" --boot order=scsi0 --ostype l26
 qm start "$VMID"
 
+echo
 echo "------------------------------------------"
 echo "[INFO] VM creation completed successfully!"
 echo "VM ID: $VMID"
@@ -148,3 +149,4 @@ echo "Cores: $CORES"
 echo "Network Bridge: $BRIDGE"
 echo "------------------------------------------"
 echo "Starting VM..."
+echo
