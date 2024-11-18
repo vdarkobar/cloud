@@ -54,9 +54,9 @@ BRIDGE="${BRIDGE:-vmbr0}"
 
 # Set variables
 VMID=$(pvesh get /cluster/nextid)
-#DEFAULT_IMAGE_URL="https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.qcow2"
-DEFAULT_IMAGE_URL="https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2"
-IMAGE_NAME="debian-12-generic-amd64.qcow2"
+DEFAULT_IMAGE_URL="https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.qcow2"
+#DEFAULT_IMAGE_URL="https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2"
+IMAGE_NAME="debian-12-nocloud-amd64.qcow2"
 
 # Prompt for custom image URL or use default
 read -p "Enter custom image URL or press Enter to use default [$DEFAULT_IMAGE_URL]: " IMAGE_URL
