@@ -193,7 +193,7 @@ if ! grep "$IMAGE_NAME" SHA512SUMS | sha512sum -c --status; then
 fi
 
 # Customize image
-virt-customize -a "$IMAGE_NAME" --install qemu-guest-agent,openssh-server,cloud-init,cloud-initramfs-growroot,cloud-guest-utils,sudo,curl,wget,ntp
+virt-customize -a "$IMAGE_NAME" --install qemu-guest-agent,openssh-server,cloud-init,cloud-initramfs-growroot,cloud-guest-utils,sudo,curl,wget,ntp,cron
 virt-customize -a "$IMAGE_NAME" --run-command "truncate -s 0 /etc/machine-id"
 virt-customize -a "$IMAGE_NAME" --run-command "passwd -l root"
 virt-customize -a "$IMAGE_NAME" --run-command "useradd -m -s /bin/bash $username"
