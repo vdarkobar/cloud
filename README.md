@@ -14,13 +14,16 @@
 </p> 
   
 <p align="left">
-<i>Run script to:</i>
+<i>Run scripts to:</i>
 </p>  
 <p align="left">
-<i>- create Debian VM or LXC (1-2) on which to setup Bastion Server (3) for remote login (SSH)</i>
+<i>- create Debian VM and LXC Templates (1-2)</i>
 </p>  
 <p align="left">
-<i>- create Debian VM or LXC (1-2) and choose one of the services to install (4-9)</i>
+<i>- clone Debian VM or LXC Template (1-2), run script to install Bastion Server (3) for remote login (SSH)</i>
+</p>  
+<p align="left">
+<i>- clone Debian VM or LXC Template (1-2), run script to install service (4-9)</i>
 </p>  
 
 </br>
