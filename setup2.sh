@@ -193,7 +193,7 @@ echo
 # Creating LXC #
 ################
 
-# Create LXC and add non-root user
+# Creating the LXC container with the specified parameters
 pct create $CONTAINER_ID $template_path \
     --arch amd64 \
     --ostype debian \
@@ -211,7 +211,11 @@ pct create $CONTAINER_ID $template_path \
     --swap 512 \
     --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp \
     --start 1
-sleep 3 && \
+
+# Allow the container to initialize
+sleep 3
+
+# Add user and configure the container
 pct exec $CONTAINER_ID -- bash -c "
 apt update -y && \
 apt upgrade -y && \
@@ -219,12 +223,30 @@ apt install -y sudo && \
 adduser --gecos ',,,,' --disabled-password $username && \
 usermod -aG sudo $username && \
 echo '$username:$password' | chpasswd
+passwd -l root
 "
-# Extracting LXC IP
-LOCAL_IP=$(pct exec $CONTAINER_ID -- ip addr show eth0 | grep 'inet ' | awk '{print $2}' | cut -d/ -f1)
 
 # Setting up LXC description
-echo "description: <div align='center'><a href='http://$LOCAL_IP' target='_blank'><img src='https://github.com/vdarkobar/Home-Cloud/blob/main/shared/rsz_debian-logo.png?raw=true'/><br>$LOCAL_IP</a></div>" >> /etc/pve/lxc/$CONTAINER_ID.conf
+echo "description: '<div align=\"center\"><img src=\"https://github.com/vdarkobar/Home-Cloud/blob/main/shared/rsz_debian-logo.png?raw=true\"/></div>'" >> /etc/pve/lxc/$CONTAINER_ID.conf
 
-# Rebooting LXC
-pct reboot $CONTAINER_ID
+# Prepare the container for template conversion
+pct exec $CONTAINER_ID -- bash -c "
+apt clean && \
+rm -f /etc/ssh/ssh_host_* && \
+rm -f /etc/machine-id && \
+touch /etc/machine-id && \
+truncate -s 0 /var/log/*log
+"
+
+# Stop and convert the container to a template
+echo -e "${YELLOW}Stopping container $CONTAINER_ID and converting it to a template...${NC}"
+pct stop $CONTAINER_ID
+pct template $CONTAINER_ID
+
+# Confirm success or handle failure
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}Container $CONTAINER_ID successfully converted to a template.${NC}"
+else
+    echo -e "${RED}Failed to convert container $CONTAINER_ID to a template.${NC}"
+    exit 1
+fi
