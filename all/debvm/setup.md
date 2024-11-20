@@ -8,7 +8,7 @@
 > *Create Proxmox Debian VM: (2CPU/2GBRAM/8GBHDD) using <a href="https://www.debian.org/">Debian</a>.*  
 > *Do not set root password during installation, this way created user will gain sudo privileges.*   
 > *Add SSH Server during installation.*  
-> *For ProxMox VM disk Resize option to work, create VM without SWAP Partition during install process*
+> *For ProxMox VM disk Resize option to work, create VM without SWAP Partition during install process (SWAP File)*
 ```bash
 Partition disks > Manual > Continue
 Select disk > SCSI3 QEMU HARDDISK > Continue
