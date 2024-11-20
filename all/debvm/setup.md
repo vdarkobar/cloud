@@ -3,7 +3,7 @@
   <br>
 </p> 
   
-## Manuallyr ceate Debian Server Cloud-Init Template to use with Proxmox 
+### Manually ceate Debian Server Cloud-Init Template to use with Proxmox 
   
 > *Create Proxmox Debian VM: (2CPU/2GBRAM/8GBHDD) using <a href="https://www.debian.org/">Debian</a>.*  
 > *Do not set root password during installation, this way created user will gain sudo privileges.*   
