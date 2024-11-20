@@ -1,20 +1,34 @@
 #!/bin/bash
 
-# Define color codes
+#####################################################################
+# Define ANSI escape sequence for green, red, yellow and white font #
+#####################################################################
+
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
-NC='\033[0m' # No Color
 
-# Script start
+########################################################
+# Define ANSI escape sequence to reset font to default #
+########################################################
+
+NC='\033[0m'
+
+#################
+# Intro message #
+#################
+
 echo
 echo -e "${GREEN} Proxmox VE:${NC}"
 sleep 1
 echo -e "${GREEN} Script creates a new LXC container with a non-root user for enhanced security${NC}"
 echo
 
-# Get storage information for templates
+###############################################
+# Gathering storage information for templates #
+###############################################
+
 template_storage_list=$(pvesm status -content vztmpl | awk 'NR>1 {print NR-1 " " $1}')
 if [ -z "$template_storage_list" ]; then
     echo -e "${RED} No storage found or failed to retrieve storage status.${NC}"
@@ -62,7 +76,10 @@ while true; do
     fi
 done
 
-# Get the next available Container ID
+############################
+# Determining Container ID #
+############################
+
 NEXT_CONTAINER_ID=$(pvesh get /cluster/nextid)
 if [ $? -ne 0 ] || [ -z "$NEXT_CONTAINER_ID" ]; then
     echo -e "${RED} Failed to retrieve the next available container ID.${NC}"
@@ -76,7 +93,10 @@ read -r CONTAINER_ID
 CONTAINER_ID="${CONTAINER_ID:-$NEXT_CONTAINER_ID}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected Container ID:${WHITE} $CONTAINER_ID"
 
-# Prompt for hostname
+########################
+# Determining Hostname #
+########################
+
 reserved_names=("localhost" "domain" "local" "host" "broadcasthost" "localdomain" "loopback" "wpad" "gateway" "dns" "mail" "ftp" "web")
 is_reserved_name() {
     local input_name=$1
@@ -106,7 +126,11 @@ while true; do
     fi
 done
 
-# Prompt for non-root username
+################################
+# Gathering non-root user data #
+################################
+
+# User name
 while true; do
     echo
     echo -ne "${WHITE}[INFO] ${YELLOW}Enter username for a non-root user:${WHITE} "
@@ -125,7 +149,7 @@ while true; do
     fi
 done
 
-# Prompt for password
+# Password
 while true; do
     echo
     echo -ne "${WHITE}[INFO] ${YELLOW}Enter password for user '${username}':${WHITE} "
@@ -145,6 +169,10 @@ while true; do
         break
     fi
 done
+
+#######################################
+# Obtaining lates Debian LXC Template #
+#######################################
 
 # Update template list
 echo
@@ -189,9 +217,9 @@ echo
 echo -e "${GREEN} Template located at:${NC}" $template_path
 echo
 
-################
-# Creating LXC #
-################
+#########################
+# Creating LXC Template #
+#########################
 
 # Creating the LXC container with the specified parameters
 pct create $CONTAINER_ID $template_path \
