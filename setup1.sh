@@ -18,7 +18,7 @@ RED="\033[1;31m"
 echo
 echo -e "${GREEN} Proxmox VE:${NC}"
 sleep 0.5
-echo -e "${GREEN} The script generates a new Debian VM template and sets up a non-root user to improve security.${NC}"
+echo -e "${GREEN} The script generates a new Debian VM Template and sets up a non-root user to improve security.${NC}"
 echo
 
 ##############################
