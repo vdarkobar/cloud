@@ -22,7 +22,7 @@ NC='\033[0m'
 echo
 echo -e "${GREEN} Proxmox VE:${NC}"
 sleep 1
-echo -e "${GREEN} Script creates a new LXC container with a non-root user for enhanced security${NC}"
+echo -e "${GREEN} The script generates a new Debian LXC Template and sets up a non-root user to improve security.${NC}"
 echo
 
 ###############################################
