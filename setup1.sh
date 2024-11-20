@@ -27,9 +27,9 @@ echo
 
 DEFAULT_IMAGE_URL="https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.qcow2"
 
-#####################################
-# Check image editing prerequisites #
-#####################################
+########################################
+# Checking image editing prerequisites #
+########################################
 
 # Check if libguestfs-tools is installed
 if ! dpkg -l | grep -q libguestfs-tools; then
@@ -62,9 +62,9 @@ VM_ID="${VM_ID:-$NEXT_VM_ID}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected VM ID:${WHITE} $VM_ID"
 echo
 
-########################
-# Determining Hostname #
-########################
+###########################
+# Determining VM Hostname #
+###########################
 
 while true; do
    echo -ne "${GREEN}Enter hostname for the VM: ${WHITE}"
@@ -77,6 +77,10 @@ while true; do
        echo -e "${WHITE}[ERROR] ${RED}Invalid hostname. Use alphanumeric characters and hyphens.${WHITE}"
    fi
 done
+
+#########################
+# Determining VM Memory #
+#########################
 
 # Calculate the maximum available memory dynamically
 MAX_MEMORY=$(free -m | awk '/^Mem:/{print $2}')
@@ -96,6 +100,10 @@ while true; do
    fi
 done
 
+###########################
+# Determining VM CPU Size #
+###########################
+
 # Calculate the maximum number of logical cores dynamically
 MAX_CORES=$(grep -c "^processor" /proc/cpuinfo)
 
@@ -113,6 +121,10 @@ while true; do
        echo -e "${WHITE}[ERROR] ${RED}Cores must be a number between 1 and $MAX_CORES.${WHITE}"
    fi
 done
+
+#################################
+# Determining VM Network Bridge #
+#################################
 
 # List all network bridges in Proxmox
 echo -e "${WHITE}[INFO] ${YELLOW}Available network bridges:${WHITE}"
@@ -135,9 +147,9 @@ fi
 echo -e "${WHITE}[INFO] ${GREEN}Selected network bridge:${WHITE} $BRIDGE"
 echo
 
-###############################################
-# Gathering storage information for templates #
-###############################################
+###################################################
+# Gathering storage information for the Templates #
+###################################################
 
 echo -e "${WHITE}[INFO] ${YELLOW}Available storages for VM disks:${WHITE}"
 AVAILABLE_STORAGES=$(pvesm status -content images | awk 'NR>1 && $1 ~ /^[a-zA-Z]/ {print $1}' | nl -s ') ')
@@ -175,6 +187,10 @@ read IMAGE_URL
 IMAGE_URL="${IMAGE_URL:-$DEFAULT_IMAGE_URL}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected image URL:${WHITE} $IMAGE_URL"
 echo
+
+################################
+# Gathering non-root user data #
+################################
 
 # Username validation
 while true; do
