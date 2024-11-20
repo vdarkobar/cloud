@@ -2,13 +2,34 @@
 
 set -e
 
-# Define color variables
+#####################################################################
+# Define ANSI escape sequence for green, red, yellow and white font #
+#####################################################################
+
 YELLOW="\033[1;33m"
 GREEN="\033[1;32m"
 WHITE="\033[0m"
-RED="\033[1;31m"  # Red for error messages
+RED="\033[1;31m"
+
+#################
+# Intro message #
+#################
+
+echo
+echo -e "${GREEN} Proxmox VE:${NC}"
+sleep 0.5
+echo -e "${GREEN} The script generates a new Debian VM template and sets up a non-root user to improve security.${NC}"
+echo
+
+##############################
+# Default Debian Cloud Image #
+##############################
 
 DEFAULT_IMAGE_URL="https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.qcow2"
+
+#####################################
+# Check image editing prerequisites #
+#####################################
 
 # Check if libguestfs-tools is installed
 if ! dpkg -l | grep -q libguestfs-tools; then
@@ -29,7 +50,10 @@ for cmd in wget qm pvesm sha512sum virt-customize; do
    fi
 done
 
-# Get the next available VM ID
+#####################
+# Determining VM ID #
+#####################
+
 NEXT_VM_ID=$(pvesh get /cluster/nextid)
 echo -e "${WHITE}[INFO] ${YELLOW}Next available VM ID:${WHITE} $NEXT_VM_ID"
 echo -ne "${GREEN}Enter VM ID [default: $NEXT_VM_ID]: ${WHITE}"
@@ -38,7 +62,10 @@ VM_ID="${VM_ID:-$NEXT_VM_ID}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected VM ID:${WHITE} $VM_ID"
 echo
 
-# Hostname validation
+########################
+# Determining Hostname #
+########################
+
 while true; do
    echo -ne "${GREEN}Enter hostname for the VM: ${WHITE}"
    read HOSTNAME
@@ -108,7 +135,10 @@ fi
 echo -e "${WHITE}[INFO] ${GREEN}Selected network bridge:${WHITE} $BRIDGE"
 echo
 
-# List available storages and select storage
+###############################################
+# Gathering storage information for templates #
+###############################################
+
 echo -e "${WHITE}[INFO] ${YELLOW}Available storages for VM disks:${WHITE}"
 AVAILABLE_STORAGES=$(pvesm status -content images | awk 'NR>1 && $1 ~ /^[a-zA-Z]/ {print $1}' | nl -s ') ')
 echo "$AVAILABLE_STORAGES"
