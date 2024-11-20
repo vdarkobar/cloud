@@ -222,6 +222,10 @@ while true; do
    fi
 done
 
+#####################################################
+# Image file download, validation and customisation #
+#####################################################
+
 # Verify checksum with error handling
 TEMPLATE_DIR="/var/lib/vz/template/iso"
 IMAGE_NAME="debian-12-nocloud-amd64.qcow2"
