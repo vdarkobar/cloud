@@ -3,7 +3,7 @@
   <br>
 </p> 
   
-# Nginx Proxy Manager
+### Nginx Proxy Manager
 *Reverse Proxy for all of your Services!*  
 
 <p align="center">
