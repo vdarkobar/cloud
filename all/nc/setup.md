@@ -3,5 +3,33 @@
   <br>
 </p> 
   
-# doc
+# NextCloud (Docker)
+  
+Login to <a href="https://dash.cloudflare.com/">CloudFlare</a> and set Domain name, or Domain name and Subdomain for your NextCloud.
+```
+    A | example.com | YOUR WAN IP
+```
+or:
+```
+    A | example.com | YOUR WAN IP
+```
+```
+    CNAME | subdomain | @ (or example.com)
+```
+Add subdomain *code* for Collabora Office:
+```
+    CNAME | code | @ (or example.com)
+```
+  
+---
+  
+#### *Decide what you will use for*:
+```
+Time Zone, Domain name, Subdomain (if planned),
+NextCloud Admin username, NextCloud Admin password,
+Collabora username, NextCloud Port Number.
+```
+
+  
+*Follow <i><a href="https://github.com/vdarkobar/home-cloud/blob/main/shared/NC%20Additional%20Settings.md">this link</a></i> for important NextCloud settings.*
   
