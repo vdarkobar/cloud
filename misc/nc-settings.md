@@ -1,5 +1,5 @@
 <p align="left">
-  <a href="https://github.com/vdarkobar/NC">Back</a>
+  <a href="https://github.com/vdarkobar/cloud/blob/main/all/nc/setup.md">Back</a>
   <br><br>
 </p> 
   
