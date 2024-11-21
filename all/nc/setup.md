@@ -31,5 +31,5 @@ Collabora username, NextCloud Port Number.
 ```
 
   
-*Follow <i><a href="https://github.com/vdarkobar/home-cloud/blob/main/shared/NC%20Additional%20Settings.md">this link</a></i> for important NextCloud settings.*
+*Follow <i><a href="https://github.com/vdarkobar/cloud/blob/main/misc/nc-settings.md">this link</a></i> for important NextCloud settings.*
   
