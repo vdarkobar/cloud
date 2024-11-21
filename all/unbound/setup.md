@@ -178,3 +178,44 @@ Flush everything
 sudo unbound-control flush_zone .
 ```
   
+### Pi-Hole  
+    
+Prepare UFW  
+  
+```bash
+      sudo ufw allow 80/tcp comment 'Pi-Hole' && \
+      sudo ufw allow 53/tcp comment 'Pi-Hole' && \
+      sudo ufw allow 53/udp comment 'Pi-Hole' && \
+      sudo ufw allow 67/tcp comment 'Pi-Hole' && \
+      sudo ufw allow 67/udp comment 'Pi-Hole' && \
+      sudo ufw allow 5335/tcp comment 'Pi-Hole/Unbound' && \
+      sudo ufw allow 5335/udp comment 'Pi-Hole/Unbound' && \
+      sudo ufw allow 546:547/udp comment 'Pi-Hole IPv6'
+```  
+  
+### Pi-Hole install  
+
+```bash
+sudo apt install curl -y && \
+curl -sSL https://install.pi-hole.net | bash
+```
+
+Pi-hole Dashboard Password  
+```bash
+pihole -a -p
+```
+  
+Update Pi-Hole  
+```bash
+pihole -up
+```
+
+Pi-hole Dashboard  
+```bash
+http://ip/admin
+```
+
+Flush everything
+```
+sudo unbound-control flush_zone .
+```
