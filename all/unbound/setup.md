@@ -194,6 +194,12 @@ Prepare UFW
 ```  
   
 ### Pi-Hole install  
+
+Installation
+```bash
+sudo apt install curl -y && \
+curl -sSL https://install.pi-hole.net | bash
+```
   
 Pi-hole Dashboard Password  
 ```bash
