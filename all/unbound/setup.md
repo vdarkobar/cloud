@@ -3,7 +3,7 @@
   <br>
 </p> 
   
-### Unbound and <a href="https://github.com/vdarkobar/cloud/tree/main?tab=readme-ov-file#self-hosted-homelab-cloud">Pi-Hole</a>
+### Unbound and <a href="https://github.com/vdarkobar/cloud/blob/main/all/unbound/setup.md#pi-hole-install">Pi-Hole</a>
   
 Prepare hosts file
 ```
