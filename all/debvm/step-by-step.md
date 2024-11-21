@@ -3,7 +3,7 @@
   <br>
 </p> 
   
-## Proxmox Debian Template
+### Proxmox Debian Template
   
 - Create ProxMox VM (2CPU/2GBRAM/16GBHDD)
 - Start Debian installation
