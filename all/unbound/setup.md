@@ -3,7 +3,7 @@
   <br>
 </p> 
   
-### Unbound
+### Unbound and Pi-Hole
   
 Prepare hosts file
 ```
