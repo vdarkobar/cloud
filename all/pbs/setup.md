@@ -8,8 +8,10 @@
 Install the qemu-guest-agent
 ```
 apt install qemu-guest-agent
-```  
-  
+```
+
+<br>
+
 ### Restore the Datastore to another PBS Server (ZFS Pool)
 
 Create new PBS VM, attach the disk(s) and import the ZPF Pool (Pool name = Datastore name from the old PBS):
