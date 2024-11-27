@@ -138,55 +138,79 @@ Prepare the Target Server
 Ensure the target PBS server is ready to receive the datastore:
 
 Connect the RDX cartridge to the target PBS server and ensure the device is detected:
+```
 lsblk
-
+```
+```
 dmesg | grep usb
+```
 
 Identify the Device, Check the filesystem and UUID of the RDX cartridge:
+```
 fdisk -l /dev/sdX
 blkid /dev/sdX
+```
 
 Create a mount point for the RDX device on the target server:
+```
 mkdir -p /mnt/rdx
-
+```
 
 Mount the RDX Cartridge
+```
 mount /dev/sdX /mnt/rdx
+```
 
 Verify the mount:
+```
 df -h
+```
 
 Add the datastore configuration to the target PBS:
+```
 proxmox-backup-manager datastore create RDX-Backup /mnt/rdx
+```
 
 Confirm the configuration:
+```
 proxmox-backup-manager datastore list
+```
 
 Ensure Auto-Mount on Reboot, Add the UUID of the cartridge to /etc/fstab:
+```
 blkid /dev/sdX
 nano /etc/fstab
+```
 
-Add a line similar to the one on the original server:
-UUID=<your-rdx-uuid> /mnt/rdx ext4 defaults 0 2
+Add a line similar to the one on the original server: `UUID=<your-rdx-uuid> /mnt/rdx ext4 defaults 0 2`
 
 Test the configuration:
+```
 umount /mnt/rdx
 mount -a
+```
 
 Restart the PBS service on the target server to recognize the new datastore:
+```
 systemctl restart proxmox-backup
-
+```
 Ensure the datastore is listed and functional:
+```
 proxmox-backup-manager datastore list
+```
 
 Check logs for any errors:
+```
 journalctl -u proxmox-backup -f
+```
 
 Import Existing Backups
 If the datastore contains existing backups, 
 they should automatically be available after the datastore is mounted and configured. 
 Verify the backups using:
+```
 proxmox-backup-client list --repository RDX-Backup
+```
 
 You can then configure backup jobs to use this datastore or restore backups as needed.
 By following these steps, you can successfully import the RDX-based datastore to a different Proxmox Backup Server.
