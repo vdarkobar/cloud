@@ -134,6 +134,8 @@ logs:
 journalctl -u proxmox-backup -f
 ```
 
+<br>
+
 ### To import an RDX-based datastore to a different Proxmox Backup Server (PBS), follow these steps:
 
 Prepare the Target Server
