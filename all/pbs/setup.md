@@ -138,10 +138,7 @@ journalctl -u proxmox-backup -f
 
 ### To import an RDX-based datastore to a different Proxmox Backup Server (PBS), follow these steps:
 
-Prepare the Target Server
-Ensure the target PBS server is ready to receive the datastore:
-
-Connect the RDX cartridge to the target PBS server and ensure the device is detected:
+Prepare the Target Server, ensure the device is detected:
 ```
 lsblk
 ```
@@ -209,8 +206,8 @@ journalctl -u proxmox-backup -f
 ```
 
 Import Existing Backups
-If the datastore contains existing backups, 
-they should automatically be available after the datastore is mounted and configured. 
+If the datastore contains existing backups,  
+they should automatically be available after the datastore is mounted and configured.  
 Verify the backups using:
 ```
 proxmox-backup-client list --repository RDX-Backup
