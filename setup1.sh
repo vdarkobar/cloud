@@ -281,5 +281,13 @@ echo
 echo -e "${GREEN}Converting to Template...${WHITE}"
 echo
 
+# Convert the VM to a template
 qm template "$VM_ID"
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}VM ${WHITE}$VM_ID ${GREEN}successfully converted to a template.${NC}"
+else
+    echo -e "${RED}Failed to convert VM $VM_ID to a template.${NC}"
+    exit 1
+fi
+
 sleep 5
