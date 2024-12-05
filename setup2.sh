@@ -274,7 +274,7 @@ pct template $CONTAINER_ID
 
 # Confirm success or handle failure
 if [ $? -eq 0 ]; then
-    echo -e "$ {GREEN}Container ${WHITE}$CONTAINER_ID ${GREEN}successfully converted to Template.${NC}"
+    echo -e " ${GREEN}Container ${WHITE}$CONTAINER_ID ${GREEN}successfully converted to Template.${NC}"
 else
     echo -e "${RED}Failed to convert container $CONTAINER_ID to Template.${NC}"
     exit 1
