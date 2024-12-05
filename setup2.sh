@@ -268,14 +268,14 @@ truncate -s 0 /var/log/*log
 
 # Stop and convert the container to a template
 echo
-echo -e " ${YELLOW}Stopping container ${WHITE}$CONTAINER_ID ${YELLOW}and converting it to a template...${NC}"
+echo -e " ${YELLOW}Stopping container ${WHITE}$CONTAINER_ID ${YELLOW}and converting it to Template...${NC}"
 pct stop $CONTAINER_ID
 pct template $CONTAINER_ID
 
 # Confirm success or handle failure
 if [ $? -eq 0 ]; then
-    echo -e "$ {GREEN}Container ${WHITE}$CONTAINER_ID ${GREEN}successfully converted to a template.${NC}"
+    echo -e "$ {GREEN}Container ${WHITE}$CONTAINER_ID ${GREEN}successfully converted to Template.${NC}"
 else
-    echo -e "${RED}Failed to convert container $CONTAINER_ID to a template.${NC}"
+    echo -e "${RED}Failed to convert container $CONTAINER_ID to Template.${NC}"
     exit 1
 fi
