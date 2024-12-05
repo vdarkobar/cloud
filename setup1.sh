@@ -273,7 +273,7 @@ qm set "$VM_ID" --ciuser "$username" --cipassword "$user_password"
 qm set "$VM_ID" --ipconfig0 ip=dhcp
 
 # Setting up LXC description
-echo 'description: <br><div align="center"><img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/></div>' >> /etc/pve/qemu-server/$VM_ID.conf
+echo 'description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo%20(36%20X%2045).png?raw=true" alt="Debian Logo"/><br>' >> /etc/pve/qemu-server/$VM_ID.conf
 
 echo -e "${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}created successfully!${WHITE}"
 echo
