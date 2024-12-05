@@ -255,8 +255,6 @@ passwd -l root
 "
 
 # Setting up LXC description
-#echo "description: <br><div align="center"><img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/></div>
-#" >> /etc/pve/lxc/$CONTAINER_ID.conf
 echo 'description: <br><div align="center"><img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/></div>' >> /etc/pve/lxc/$CONTAINER_ID.conf
 
 # Prepare the container for template conversion
