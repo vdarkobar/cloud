@@ -288,7 +288,7 @@ echo -e " ${YELLOW}Converting to Template...${WHITE}"
 
 # Convert the VM to a template
 qm template "$VM_ID"
-sleep 3
+
 if [ $? -eq 0 ]; then
     echo -e " ${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}successfully converted to Template.${WHITE}"
 else
