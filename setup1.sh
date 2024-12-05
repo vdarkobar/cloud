@@ -281,17 +281,16 @@ TAGS="VM, Template, Debian$DEBIAN_VERSION"
 qm set "$VM_ID" --tags "$TAGS"
 
 echo
-echo -e "${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}created successfully!${WHITE}"
+echo -e " ${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}created successfully!${WHITE}"
 echo
-echo -e "${YELLOW}Converting to Template...${WHITE}"
+echo -e " ${YELLOW}Converting to Template...${WHITE}"
 
 # Convert the VM to a template
 qm template "$VM_ID"
+sleep 3
 if [ $? -eq 0 ]; then
-    echo -e "${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}successfully converted to Template.${WHITE}"
+    echo -e " ${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}successfully converted to Template.${WHITE}"
 else
     echo -e "${RED}Failed to convert VM $VM_ID to Template.${WHITE}"
     exit 1
 fi
-
-sleep 3
