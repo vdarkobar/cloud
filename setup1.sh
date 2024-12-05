@@ -275,9 +275,10 @@ qm set "$VM_ID" --ipconfig0 ip=dhcp
 # Setting up LXC description
 echo 'description: <br><div align="center"><img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/></div>' >> /etc/pve/qemu-server/$VM_ID.conf
 
-echo "${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}created successfully!"
+echo -e "${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}created successfully!${WHITE}"
 echo
-echo "${GREEN}Converting to Template..."
+echo -e "${GREEN}Converting to Template...${WHITE}"
 echo
+
 qm template "$VM_ID"
 sleep 5
