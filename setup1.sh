@@ -62,22 +62,6 @@ VM_ID="${VM_ID:-$NEXT_VM_ID}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected VM ID:${WHITE} $VM_ID"
 echo
 
-###########################
-# Determining VM Hostname #
-###########################
-
-while true; do
-   echo -ne "${GREEN}Enter hostname for the VM: ${WHITE}"
-   read HOSTNAME
-   if [[ $HOSTNAME =~ ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$ ]]; then
-       echo -e "${WHITE}[INFO] ${GREEN}Selected hostname:${WHITE} $HOSTNAME"
-       echo
-       break
-   else
-       echo -e "${WHITE}[ERROR] ${RED}Invalid hostname. Use alphanumeric characters and hyphens.${WHITE}"
-   fi
-done
-
 #########################
 # Determining VM Memory #
 #########################
@@ -187,6 +171,22 @@ read IMAGE_URL
 IMAGE_URL="${IMAGE_URL:-$DEFAULT_IMAGE_URL}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected image URL:${WHITE} $IMAGE_URL"
 echo
+
+###########################
+# Determining VM Hostname #
+###########################
+
+while true; do
+   echo -ne "${GREEN}Enter hostname for the VM: ${WHITE}"
+   read HOSTNAME
+   if [[ $HOSTNAME =~ ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$ ]]; then
+       echo -e "${WHITE}[INFO] ${GREEN}Selected hostname:${WHITE} $HOSTNAME"
+       echo
+       break
+   else
+       echo -e "${WHITE}[ERROR] ${RED}Invalid hostname. Use alphanumeric characters and hyphens.${WHITE}"
+   fi
+done
 
 ################################
 # Gathering non-root user data #
