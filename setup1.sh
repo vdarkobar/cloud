@@ -272,8 +272,13 @@ qm set "$VM_ID" --memory "$MEMORY" --balloon 2048
 qm set "$VM_ID" --ciuser "$username" --cipassword "$user_password"
 qm set "$VM_ID" --ipconfig0 ip=dhcp
 
-# Setting up LXC description
+# Setting up VM description
 echo 'description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/><br>' >> /etc/pve/qemu-server/$VM_ID.conf
+
+# Setting up VM Tags
+DEBIAN_VERSION=$(cat /etc/debian_version)
+TAGS="VM, Template, Debian$DEBIAN_VERSION"
+qm set "$VM_ID" --tags "$TAGS"
 
 echo
 echo -e "${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}created successfully!${WHITE}"
