@@ -25,6 +25,7 @@ echo
 # Default Debian Cloud Image #
 ##############################
 
+# Change for new release
 DEFAULT_IMAGE_URL="https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.qcow2"
 
 ########################################
@@ -228,7 +229,7 @@ done
 
 # Verify checksum with error handling
 TEMPLATE_DIR="/var/lib/vz/template/iso"
-IMAGE_NAME="debian-12-nocloud-amd64.qcow2"
+IMAGE_NAME=$(basename "$DEFAULT_IMAGE_URL")
 CHECKSUMS_URL="${IMAGE_URL%/*}/SHA512SUMS"
 mkdir -p "$TEMPLATE_DIR"
 cd "$TEMPLATE_DIR"
