@@ -267,6 +267,7 @@ truncate -s 0 /var/log/*log
 "
 
 # Stop and convert the container to a template
+echo
 echo -e "${YELLOW}Stopping container $CONTAINER_ID and converting it to a template...${NC}"
 pct stop $CONTAINER_ID
 pct template $CONTAINER_ID
