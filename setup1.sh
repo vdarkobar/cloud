@@ -278,15 +278,14 @@ echo 'description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/d
 echo
 echo -e "${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}created successfully!${WHITE}"
 echo
-echo -e "${GREEN}Converting to Template...${WHITE}"
-echo
+echo -e "${YELLOW}Converting to Template...${WHITE}"
 
 # Convert the VM to a template
 qm template "$VM_ID"
 if [ $? -eq 0 ]; then
-    echo -e "${GREEN}VM ${WHITE}$VM_ID ${GREEN}successfully converted to a template.${WHITE}"
+    echo -e "${GREEN}VM ${WHITE}$VM_ID ${GREEN}successfully converted to Template.${WHITE}"
 else
-    echo -e "${RED}Failed to convert VM $VM_ID to a template.${WHITE}"
+    echo -e "${RED}Failed to convert VM $VM_ID to Template.${WHITE}"
     exit 1
 fi
 
