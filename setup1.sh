@@ -277,7 +277,7 @@ echo 'description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/d
 
 # Setting up VM Tags
 DEBIAN_VERSION=$(cat /etc/debian_version)
-TAGS="VM, Template, Debian$DEBIAN_VERSION"
+TAGS="vm, template, debian$DEBIAN_VERSION"
 qm set "$VM_ID" --tags "$TAGS"
 
 echo
