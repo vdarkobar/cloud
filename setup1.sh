@@ -182,7 +182,7 @@ while true; do
 done
 
 # Image URL
-echo -ne "${GREEN}Enter custom image URL or press Enter to use default [$DEFAULT_IMAGE_URL]: ${WHITE}"
+echo -ne "${GREEN}Enter custom image URL or press Enter to use default ${YELLOW}[$DEFAULT_IMAGE_URL]: ${WHITE}"
 read IMAGE_URL
 IMAGE_URL="${IMAGE_URL:-$DEFAULT_IMAGE_URL}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected image URL:${WHITE} $IMAGE_URL"
@@ -275,6 +275,7 @@ qm set "$VM_ID" --ipconfig0 ip=dhcp
 # Setting up LXC description
 echo 'description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/><br>' >> /etc/pve/qemu-server/$VM_ID.conf
 
+echo
 echo -e "${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}created successfully!${WHITE}"
 echo
 echo -e "${GREEN}Converting to Template...${WHITE}"
