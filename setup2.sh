@@ -266,6 +266,11 @@ touch /etc/machine-id && \
 truncate -s 0 /var/log/*log
 "
 
+# Setting up LXC Tags
+DEBIAN_VERSION=$(cat /etc/debian_version)
+TAGS="lxc, template, debian$DEBIAN_VERSION"
+echo "tags: $TAGS" >> /etc/pve/lxc/$CONTAINER_ID.conf
+
 # Stop and convert the container to a template
 echo
 echo -e " ${YELLOW}Stopping container ${WHITE}$CONTAINER_ID ${YELLOW}and converting it to Template...${NC}"
