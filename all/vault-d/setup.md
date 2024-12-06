@@ -18,7 +18,7 @@ example:
   
 > Domain name of your website, Vaultwarden Subdomain, Port Number, Time Zone and Admin password.  
   
-#### Script will add *ADMIN TOKEN* to `.env` file, used to log in at:
+#### Script will add *ADMIN TOKEN* to `.env` file/ Log in at:
 ```
 https://subdomain.example.com/admin
 ```
