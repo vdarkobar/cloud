@@ -861,17 +861,40 @@ read -s -p "Enter Vaultwarden Admin password: " VWPASS
 echo
 echo
 
-sed -i "s|01|${DNAME}|" .env && \
-sed -i "s|02|${SDNAME}|" .env && \
-sed -i "s|03|${VWPORTN}|" .env && \
-sed -i "s|04|${TZONE}|" .env &&
+#sed -i "s|01|${DNAME}|" .env && \
+#sed -i "s|02|${SDNAME}|" .env && \
+#sed -i "s|03|${VWPORTN}|" .env && \
+#sed -i "s|04|${TZONE}|" .env &&
 
 # Automatically generate a unique salt using base64 encoding as recommended
 SALT=$(openssl rand -base64 32)
 # Hash the password with Argon2 using the generated salt and recommended parameters, then process the output with sed
 TOKEN=$(echo -n "$VWPASS" | argon2 "$SALT" -e -id -k 65536 -t 3 -p 4 | sed 's#\$#\$\$#g')
 # Use sed to replace the placeholder in the .env file with the encoded hash
-sed -i "s|CHANGE_ADMIN_TOKEN|${TOKEN}|" .env
+sed -i "s|CHANGE_ADMIN_TOKEN|${TOKEN}|" $WORK_DIR/.env
+
+# Update .env file with user input
+sed -i "s|01|${DNAME}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Domain name in .env file.${NC}"; exit 1; }
+sed -i "s|02|${SDNAME}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Subdomain in .env file.${NC}"; exit 1; }
+sed -i "s|02|${VWPORTN}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Port Number in .env file.${NC}"; exit 1; }
+sed -i "s|02|${TZONE}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Time Zone in .env file.${NC}"; exit 1; }
+
+# Main loop for docker compose up command
+while true; do
+    echo -ne "${GREEN} Execute docker compose now?${NC} (yes/no) "; read yn
+    echo
+    yn=$(echo "$yn" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
+    case $yn in
+        yes )
+            if ! sudo docker compose -f $WORK_DIR/docker-compose.yml up -d; then
+                echo -e "${RED} Docker compose up failed. Check docker and docker compose installation.${NC}";
+                exit 1;
+            fi
+            break;;
+        no ) exit;;
+        * ) echo -e "${RED} Please answer${NC} yes or no";;
+    esac
+done
 
 
 #######
@@ -923,3 +946,18 @@ echo -e "${GREEN} To authenticate, use Vaultwarden Admin password.${NC}"
 echo 
 echo -e "${GREEN} Set Vaultwarden external url in the Vaultwarden browser extension:${NC}"
 echo
+
+
+##########################
+# Prompt user for reboot #
+##########################
+
+while true; do
+    read -p "Do you want to reboot the server now (recommended)? (yes/no): " response
+    echo
+    case "${response,,}" in
+        yes|y) echo -e "${GREEN} Rebooting the server...${NC}"; sudo reboot; break ;;
+        no|n) echo -e "${RED} Reboot cancelled.${NC}"; exit 0 ;;
+        *) echo -e "${YELLOW} Invalid response. Please answer${NC} yes or no."; echo ;;
+    esac
+done
