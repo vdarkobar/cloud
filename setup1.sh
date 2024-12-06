@@ -179,7 +179,6 @@ echo -ne "${GREEN}Enter custom image URL or press Enter to use default ${YELLOW}
 read IMAGE_URL
 IMAGE_URL="${IMAGE_URL:-$DEFAULT_IMAGE_URL}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected image URL:${WHITE} $IMAGE_URL"
-echo
 
 
 ########################
@@ -214,7 +213,6 @@ while true; do
         echo -e "${WHITE}[ERROR] ${RED}Invalid hostname format.${WHITE}"
     fi
 done
-echo
 
 
 ################################
@@ -223,6 +221,7 @@ echo
 
 # Username validation
 while true; do
+   echo
    echo -ne "${GREEN}Enter the username for the new user: ${WHITE}"
    read username
    if [[ "$username" =~ ^[a-z_][a-z0-9_-]{2,15}$ ]]; then
