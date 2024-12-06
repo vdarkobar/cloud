@@ -685,3 +685,85 @@ echo -e "${GREEN} Docker and Docker Compose(v2) installation completed.${NC}"
 echo
 
 
+##############################
+# Create docker-compose file #
+##############################
+
+# Define the path to the directory and the file
+file_path="$WORK_DIR/docker-compose.yml"
+
+# Check if the WORK_DIR variable is set
+if [ -z "$WORK_DIR" ]; then
+    echo -e "${RED} Error: WORK_DIR variable is not set${NC}"
+    exit 1
+fi
+
+# Create or overwrite the docker-compose.yml file, using sudo for permissions
+echo -e "${GREEN} Creating docker-compose file...:${NC} $file_path"
+
+sudo tee "$file_path" > /dev/null <<EOF || { echo "Error: Failed to create $file_path"; exit 1; }
+networks:
+  vw:
+    name: vw
+    driver: bridge
+
+services:
+ 
+  # Vaultwarden - Open Source Password Manager.
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden # change for multiple instances
+    restart: always
+
+    networks:
+      - vw
+
+    ports:
+      - $VWPORTN:80
+      #- 3012:3012
+
+    volumes:
+      - ./vw-data:/data
+      - /var/log/docker:/var/log/docker
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+    environment:
+      - ADMIN_TOKEN=$ADMIN_TOKEN
+      - WEBSOCKET_ENABLED=true
+      - SIGNUPS_ALLOWED=true # Change to false after first login
+      - INVITATIONS_ALLOWED=true # Send invitation using admin page
+      - LOG_FILE=/var/log/docker/bitwarden.log
+      - DOMAIN=https://$SUBDOMAIN.$DOMAINNAME
+
+  # Watchtower - automating Docker container base image updates.
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower-vw
+    restart: always
+
+    networks:
+      - vw
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    environment:
+      - TZ=$TZ
+      - WATCHTOWER_DEBUG=true
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_REMOVE_VOLUMES=true
+      - WATCHTOWER_INCLUDE_STOPPED=true
+      - WATCHTOWER_SCHEDULE=0 30 5 * * * # Everyday at 5:30
+EOF
+
+# Check if the file was created successfully
+if [ $? -ne 0 ]; then
+    echo
+    echo -e "${RED} Error: Failed to create${NC} $file_path"
+    exit 1
+fi
+
+echo
+echo -e "${GREEN} docker-compose file created successfully:${NC} $file_path"
+echo
