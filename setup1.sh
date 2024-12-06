@@ -179,7 +179,7 @@ echo -ne "${GREEN}Enter custom image URL or press Enter to use default ${YELLOW}
 read IMAGE_URL
 IMAGE_URL="${IMAGE_URL:-$DEFAULT_IMAGE_URL}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected image URL:${WHITE} $IMAGE_URL"
-echo
+
 
 ########################
 # Determining Hostname #
