@@ -90,8 +90,8 @@ echo
 
 echo -e "${GREEN} You'll be asked to enter: ${NC}"
 echo -e " - Public Key to configure your SSH access"
-echo -e " - Domain name for your website, Vaultwarden Subdomain, Port Number and Admin page password"
-echo -e " - Time Zone"
+echo -e " - Domain name for your website, Vaultwarden Subdomain"
+echo -e " - Port Number and Time Zone"
 echo
 echo
 
