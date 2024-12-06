@@ -258,9 +258,9 @@ echo
 echo -e "${WHITE}[INFO] ${YELLOW}Configuring locales in the container to avoid locale warnings...${WHITE}"
 echo
 pct exec $CONTAINER_ID -- bash -c "
-    apt update -y && \
-    apt upgrade -y && \
-    apt install -y locales && \
+    apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y locales && \
     sed -i 's/^# *en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen en_US.UTF-8 && \
     update-locale LANG=en_US.UTF-8
@@ -284,7 +284,7 @@ echo
 
 # Add user and configure the container
 pct exec $CONTAINER_ID -- bash -c "
-apt install -y sudo cloud-init && \
+apt-get install -y sudo cloud-init && \
 adduser --gecos ',,,,' --disabled-password $username && \
 usermod -aG sudo $username && \
 echo '$username:$password' | chpasswd && \
@@ -311,7 +311,7 @@ pct exec $CONTAINER_ID -- bash -c "touch /var/lib/cloud/seed/nocloud/meta-data"
 
 # Prepare the container for template conversion
 pct exec $CONTAINER_ID -- bash -c "
-apt clean && \
+apt-get clean && \
 rm -f /etc/ssh/ssh_host_* && \
 rm -f /etc/machine-id && \
 touch /etc/machine-id && \
