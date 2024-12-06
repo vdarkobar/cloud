@@ -134,7 +134,6 @@ done
 # Creating a backup of files before making changes using the script. #
 ######################################################################
 
-
 # Copy /etc/apt/apt.conf.d/50unattended-upgrades
 if ! sudo cp /etc/apt/apt.conf.d/50unattended-upgrades /etc/apt/apt.conf.d/50unattended-upgrades.bak; then
     echo -e "${RED} Error copying 50unattended-upgrades. Exiting.${NC}"
