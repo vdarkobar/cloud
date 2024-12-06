@@ -876,8 +876,8 @@ sed -i "s|CHANGE_ADMIN_TOKEN|${TOKEN}|" $WORK_DIR/.env
 # Update .env file with user input
 sed -i "s|01|${DNAME}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Domain name in .env file.${NC}"; exit 1; }
 sed -i "s|02|${SDNAME}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Subdomain in .env file.${NC}"; exit 1; }
-sed -i "s|02|${VWPORTN}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Port Number in .env file.${NC}"; exit 1; }
-sed -i "s|02|${TZONE}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Time Zone in .env file.${NC}"; exit 1; }
+sed -i "s|03|${VWPORTN}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Port Number in .env file.${NC}"; exit 1; }
+sed -i "s|04|${TZONE}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Time Zone in .env file.${NC}"; exit 1; }
 
 # Main loop for docker compose up command
 while true; do
