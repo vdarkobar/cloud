@@ -55,6 +55,3 @@ Adjust for the name of the downloaded file and run:
 ```
 .\MediaCreationTool21H1.exe /Eula Accept /Retail /MediaArch x64 /MediaLangCode en-US /MediaEdition EnterpriseN
 ```
-  
-### *Download <a href="https://github.com/vdarkobar/Home-Cloud/blob/main/shared/MAS-1-4.rar?raw=true"> 1.4.zip </a>*.
-
