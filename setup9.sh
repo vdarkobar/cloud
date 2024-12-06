@@ -815,10 +815,6 @@ WORK_DIR=$HOME/vaultwarden
 # Take ownership of the working directory
 sudo chown -R $(whoami):$(whoami) $WORK_DIR
 
-###############
-# Vaultwarden #
-###############
-
 echo -ne "${GREEN}Enter Domain name (e.g. example.com): ${NC}"; read DNAME
 echo
 
