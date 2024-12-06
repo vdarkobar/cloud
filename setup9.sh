@@ -815,10 +815,28 @@ WORK_DIR=$HOME/vaultwarden
 # Take ownership of the working directory
 sudo chown -R $(whoami):$(whoami) $WORK_DIR
 
-# Prompt user for input
-echo -ne "${GREEN} Enter Time Zone (e.g. Europe/Berlin):${NC} "; read TZONE;
+###############
+# Vaultwarden #
+###############
+
+echo -ne "${GREEN}Enter Domain name (e.g. example.com): ${NC}"; read DNAME
 echo
 
+echo -ne "${GREEN}Enter Vaultwarden Subdomain (e.g. pass or vw):${NC} "; read SDNAME
+echo
+
+echo -ne "${GREEN}Enter Vaultwarden Port Number(49152-65535):${NC} "; read VWPORTN;
+# Check if the port number is within the specified range
+while [[ $VWPORTN -lt 49152 || $VWPORTN -gt 65535 ]]; do
+    echo -e "${RED}Port number is out of the allowed range. Please enter a number between 49152 and 65535.${NC}"
+    echo -ne "${GREEN}Enter valid Vaultwarden Port Number(49152-65535):${NC} "; read VWPORTN;
+done
+
+echo
+
+# Prompt user for input
+echo -ne "${GREEN}Enter Time Zone (e.g. Europe/Berlin):${NC} "; read TZONE;
+echo
 # Check if the entered time zone is valid
 TZONES=$(timedatectl list-timezones) # Get list of time zones
 VALID_TZ=0 # Flag to check if TZONE is valid
@@ -831,9 +849,9 @@ done
 
 # Prompt user until a valid time zone is entered
 while [[ $VALID_TZ -eq 0 ]]; do
-    echo -e "${RED} Invalid Time Zone. Please enter a valid time zone (e.g., Europe/Berlin).${NC}"
+    echo -e "${RED}Invalid Time Zone. Please enter a valid time zone (e.g., Europe/Berlin).${NC}"
     echo
-    echo -ne "${GREEN} Enter Time Zone:${NC} "; read TZONE;
+    echo -ne "${GREEN}Enter Time Zone:${NC} "; read TZONE;
     echo
     for tz in $TZONES; do
         if [[ "$TZONE" == "$tz" ]]; then
@@ -843,13 +861,69 @@ while [[ $VALID_TZ -eq 0 ]]; do
     done
 done
 
-echo -ne "${GREEN} Enter NPM Port Number(49152-65535):${NC} "; read PORTN;
-
-# Check if the port number is within the specified range
-while [[ $PORTN -lt 49152 || $PORTN -gt 65535 ]]; do
-    echo -e "${RED} Port number is out of the allowed range. Please enter a number between 49152 and 65535.${NC}"
-    echo -ne "${GREEN} Enter NPM Port Number(49152-65535):${NC} "; read PORTN;
-done
-
+read -s -p "Enter Vaultwarden Admin password: " VWPASS
+echo
 echo
 
+sed -i "s|01|${DNAME}|" .env && \
+sed -i "s|02|${SDNAME}|" .env && \
+sed -i "s|03|${VWPORTN}|" .env && \
+sed -i "s|04|${TZONE}|" .env &&
+
+# Automatically generate a unique salt using base64 encoding as recommended
+SALT=$(openssl rand -base64 32)
+# Hash the password with Argon2 using the generated salt and recommended parameters, then process the output with sed
+TOKEN=$(echo -n "$VWPASS" | argon2 "$SALT" -e -id -k 65536 -t 3 -p 4 | sed 's#\$#\$\$#g')
+# Use sed to replace the placeholder in the .env file with the encoded hash
+sed -i "s|CHANGE_ADMIN_TOKEN|${TOKEN}|" .env
+
+
+#######
+# UFW #
+#######
+
+echo
+echo -e "${GREEN}Preparing firewall for local access...${NC}"
+sleep 0.5 # delay for 0.5 seconds
+echo
+
+# Use the PORTN variable for the UFW rule
+sudo ufw allow "${VWPORTN}/tcp" comment "Vaultwarden custom port"
+sudo systemctl restart ufw
+echo
+
+
+##########
+# Access #
+##########
+
+clear
+echo -e "${GREEN}Access Vaultwarden instance at${NC}"
+sleep 0.5 # delay for 0.5 seconds
+
+# Get the primary local IP address of the machine more reliably
+LOCAL_IP=$(ip route get 1.1.1.1 | awk '{print $7; exit}')
+# Get the short hostname directly
+HOSTNAME=$(hostname -s)
+# Use awk more efficiently to extract the domain name from /etc/resolv.conf
+DOMAIN_LOCAL=$(awk '/^search/ {print $2; exit}' /etc/resolv.conf)
+# Directly concatenate HOSTNAME and DOMAIN, leveraging shell parameter expansion for conciseness
+LOCAL_DOMAIN="${HOSTNAME}${DOMAIN_LOCAL:+.$DOMAIN_LOCAL}"
+
+# Display access instructions
+echo
+echo -e "${GREEN} Vaultwarden requires${NC} https ${GREEN}connection for account creation.${NC}"
+echo
+echo -e "${GREEN} Configure Reverse proxy (NPM) for external access.${NC}"
+echo
+echo -e "${GREEN} External access:${NC} $SDNAME.$DNAME"
+echo
+echo -e "${GREEN} Local access:${NC}    $LOCAL_IP:$VWPORTN"
+echo -e "${GREEN}             :${NC}    $LOCAL_DOMAIN:$VWPORTN"
+echo
+echo -e "${GREEN} To access Administrator page add:${NC} /admin ${GREEN}to the end of the access url.${NC}"
+echo
+echo -e "${GREEN} To authenticate, use Vaultwarden Admin password.${NC}"
+echo 
+echo -e "${GREEN} Set Vaultwarden external url in the Vaultwarden browser extension:${NC}"
+echo
