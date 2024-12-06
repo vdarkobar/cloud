@@ -11,6 +11,7 @@ GREEN="\033[1;32m"
 WHITE="\033[0m"
 RED="\033[1;31m"
 
+
 #################
 # Intro message #
 #################
@@ -21,12 +22,14 @@ sleep 0.5
 echo -e "${GREEN} The script generates a new Debian VM Template and sets up a non-root user to improve security.${WHITE}"
 echo
 
+
 ##############################
 # Default Debian Cloud Image #
 ##############################
 
 # Change for new release
 DEFAULT_IMAGE_URL="https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.qcow2"
+
 
 ########################################
 # Checking image editing prerequisites #
@@ -51,6 +54,7 @@ for cmd in wget qm pvesm sha512sum virt-customize; do
    fi
 done
 
+
 #####################
 # Determining VM ID #
 #####################
@@ -62,6 +66,7 @@ read VM_ID
 VM_ID="${VM_ID:-$NEXT_VM_ID}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected VM ID:${WHITE} $VM_ID"
 echo
+
 
 #########################
 # Determining VM Memory #
@@ -85,6 +90,7 @@ while true; do
    fi
 done
 
+
 ###########################
 # Determining VM CPU Size #
 ###########################
@@ -106,6 +112,7 @@ while true; do
        echo -e "${WHITE}[ERROR] ${RED}Cores must be a number between 1 and $MAX_CORES.${WHITE}"
    fi
 done
+
 
 #################################
 # Determining VM Network Bridge #
@@ -131,6 +138,7 @@ else
 fi
 echo -e "${WHITE}[INFO] ${GREEN}Selected network bridge:${WHITE} $BRIDGE"
 echo
+
 
 ###################################################
 # Gathering storage information for the Templates #
@@ -208,6 +216,7 @@ while true; do
 done
 echo
 
+
 ################################
 # Gathering non-root user data #
 ################################
@@ -241,6 +250,7 @@ while true; do
        echo -e "${WHITE}[ERROR] ${RED}Passwords do not match or are empty.${WHITE}"
    fi
 done
+
 
 #####################################################
 # Image file download, validation and customisation #
