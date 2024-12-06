@@ -767,3 +767,36 @@ fi
 echo
 echo -e "${GREEN} docker-compose file created successfully:${NC} $file_path"
 echo
+
+
+####################
+# Create .env file #
+####################
+
+# Define the path to the directory and the file
+file_path="$WORK_DIR/.env"
+
+# Check if the WORK_DIR variable is set
+if [ -z "$WORK_DIR" ]; then
+    echo -e "${RED} Error: WORK_DIR variable is not set${NC}"
+    exit 1
+fi
+
+# Create or overwrite the docker-compose.yml file, using sudo for permissions
+echo -e "${GREEN} Creating .env file...:${NC} $file_path"
+
+sudo tee "$file_path" > /dev/null <<EOF || { echo "Error: Failed to create $file_path"; exit 1; }
+TZ=01
+PORT=02
+EOF
+
+# Check if the file was created successfully
+if [ $? -ne 0 ]; then
+    echo
+    echo -e "${RED} Error: Failed to create${NC} $file_path"
+    exit 1
+fi
+
+echo
+echo -e "${GREEN} .env file created successfully:${NC} $file_path"
+echo
