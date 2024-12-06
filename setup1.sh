@@ -274,14 +274,14 @@ if ! grep "$IMAGE_NAME" SHA512SUMS | sha512sum -c --status; then
 fi
 
 # Customize image
-virt-customize -a "$IMAGE_NAME" --no-random-seed --install qemu-guest-agent,openssh-server,cloud-init,cloud-initramfs-growroot,cloud-guest-utils,sudo,curl,wget,ntp,cron
-virt-customize -a "$IMAGE_NAME" --no-random-seed --run-command "passwd -l root"
-virt-customize -a "$IMAGE_NAME" --no-random-seed --run-command "useradd -m -s /bin/bash $username"
-virt-customize -a "$IMAGE_NAME" --no-random-seed --run-command "usermod -aG sudo $username"
-virt-customize -a "$IMAGE_NAME" --no-random-seed --password "$username:password:$user_password"
-virt-customize -a "$IMAGE_NAME" --no-random-seed --run-command "rm -f /etc/ssh/ssh_host_*"
-virt-customize -a "$IMAGE_NAME" --no-random-seed --run-command "cloud-init clean --logs --seed"
-virt-customize -a "$IMAGE_NAME" --no-random-seed --run-command "truncate -s 0 /etc/machine-id"
+virt-customize -a "$IMAGE_NAME" --install qemu-guest-agent,openssh-server,cloud-init,cloud-initramfs-growroot,cloud-guest-utils,sudo,curl,wget,ntp,cron
+virt-customize -a "$IMAGE_NAME" --run-command "passwd -l root"
+virt-customize -a "$IMAGE_NAME" --run-command "useradd -m -s /bin/bash $username"
+virt-customize -a "$IMAGE_NAME" --run-command "usermod -aG sudo $username"
+virt-customize -a "$IMAGE_NAME" --password "$username:password:$user_password"
+virt-customize -a "$IMAGE_NAME" --run-command "rm -f /etc/ssh/ssh_host_*"
+virt-customize -a "$IMAGE_NAME" --run-command "cloud-init clean --logs --seed"
+virt-customize -a "$IMAGE_NAME" --run-command "truncate -s 0 /etc/machine-id"
 
 # Create and configure VM
 qm create "$VM_ID" --name "$HOSTNAME" --memory "$MEMORY" --cores "$CORES" --net0 virtio,bridge="$BRIDGE,firewall=1"
