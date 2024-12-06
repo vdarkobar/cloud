@@ -79,6 +79,7 @@ echo -e "${GREEN} Local domain          :${NC} $DOMAIN_LOCAL"
 echo
 echo
 echo -e "${GREEN} Be sure that you are logged in as a${NC} non-root ${GREEN}user and that user is added to the${NC} sudo ${GREEN}group"${NC}
+echo
 echo -e "${GREEN} Login to${NC} CloudFlare ${GREEN}and set Subdomain for your Vaultwarden:${NC}"
 echo
 echo "      CNAME |  subdomain  | @ (or example.com)"
