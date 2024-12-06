@@ -241,21 +241,36 @@ pct create $CONTAINER_ID $template_path \
     --start 1
 
 # Allow the container to initialize
-sleep 3
+sleep 5
 
 # Add user and configure the container
 pct exec $CONTAINER_ID -- bash -c "
 apt update -y && \
 apt upgrade -y && \
-apt install -y sudo && \
+apt install -y sudo cloud-init && \
 adduser --gecos ',,,,' --disabled-password $username && \
 usermod -aG sudo $username && \
-echo '$username:$password' | chpasswd
+echo '$username:$password' | chpasswd && \
 passwd -l root
 "
 
-# Setting up LXC description
-echo 'description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/><br>' >> /etc/pve/lxc/$CONTAINER_ID.conf
+# Enable Cloud-Init services inside the container so it runs at next boot
+pct exec $CONTAINER_ID -- systemctl enable cloud-init
+pct exec $CONTAINER_ID -- systemctl enable cloud-config
+pct exec $CONTAINER_ID -- systemctl enable cloud-final
+
+# Provide a Cloud-Init user-data file that instructs Cloud-Init to regenerate SSH keys
+pct exec $CONTAINER_ID -- bash -c "mkdir -p /var/lib/cloud/seed/nocloud"
+
+# Insert a minimal Cloud-Init configuration that deletes old keys and generates new ones
+pct exec $CONTAINER_ID -- bash -c 'cat > /var/lib/cloud/seed/nocloud/user-data <<EOF
+#cloud-config
+ssh_deletekeys: true
+ssh_genkeytypes: [ "rsa", "ecdsa", "ed25519" ]
+EOF'
+
+# Insert an empty meta-data file (required by NoCloud datasource)
+pct exec $CONTAINER_ID -- bash -c "touch /var/lib/cloud/seed/nocloud/meta-data"
 
 # Prepare the container for template conversion
 pct exec $CONTAINER_ID -- bash -c "
@@ -266,20 +281,21 @@ touch /etc/machine-id && \
 truncate -s 0 /var/log/*log
 "
 
-# Setting up LXC Tags
-DEBIAN_VERSION=$(cat /etc/debian_version)
+DEBIAN_VERSION=$(pct exec $CONTAINER_ID -- cat /etc/debian_version)
 TAGS="lxc, template, debian$DEBIAN_VERSION"
 echo "tags: $TAGS" >> /etc/pve/lxc/$CONTAINER_ID.conf
 
-# Stop and convert the container to a template
+# Add a description
+echo 'description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/><br>' >> /etc/pve/lxc/$CONTAINER_ID.conf
+
 echo
 echo -e " ${YELLOW}Stopping container ${WHITE}$CONTAINER_ID ${YELLOW}and converting it to Template...${NC}"
 pct stop $CONTAINER_ID
 pct template $CONTAINER_ID
 
-# Confirm success or handle failure
 if [ $? -eq 0 ]; then
     echo -e " ${GREEN}Container ${WHITE}$CONTAINER_ID ${GREEN}successfully converted to Template.${NC}"
+    echo -e " ${GREEN}Any clones from this template will have SSH keys regenerated automatically via Cloud-Init on first boot.${NC}"
 else
     echo -e "${RED}Failed to convert container $CONTAINER_ID to Template.${NC}"
     exit 1
