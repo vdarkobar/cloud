@@ -173,21 +173,41 @@ IMAGE_URL="${IMAGE_URL:-$DEFAULT_IMAGE_URL}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected image URL:${WHITE} $IMAGE_URL"
 echo
 
-###########################
-# Determining VM Hostname #
-###########################
+
+########################
+# Determining Hostname #
+########################
+
+reserved_names=("localhost" "domain" "local" "host" "broadcasthost" "localdomain" "loopback" "wpad" "gateway" "dns" "mail" "ftp" "web")
+
+is_reserved_name() {
+    local input_name=$1
+    for name in "${reserved_names[@]}"; do
+        if [[ "$input_name" == "$name" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+DEFAULT_HOSTNAME="debvm"
 
 while true; do
-   echo -ne "${GREEN}Enter hostname for the VM: ${WHITE}"
-   read HOSTNAME
-   if [[ $HOSTNAME =~ ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$ ]]; then
-       echo -e "${WHITE}[INFO] ${GREEN}Selected hostname:${WHITE} $HOSTNAME"
-       echo
-       break
-   else
-       echo -e "${WHITE}[ERROR] ${RED}Invalid hostname. Use alphanumeric characters and hyphens.${WHITE}"
-   fi
+    echo
+    echo -ne "${WHITE}[INFO] ${YELLOW}Enter hostname for the container [default: $DEFAULT_HOSTNAME]:${WHITE} "
+    read -r HOSTNAME
+    HOSTNAME="${HOSTNAME:-$DEFAULT_HOSTNAME}"
+
+    if is_reserved_name "$HOSTNAME"; then
+        echo -e "${WHITE}[ERROR] ${RED}Invalid hostname. Reserved name.${WHITE}"
+    elif [[ "$HOSTNAME" =~ ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$ ]]; then
+        echo -e "${WHITE}[INFO] ${GREEN}Selected Hostname:${WHITE} $HOSTNAME"
+        break
+    else
+        echo -e "${WHITE}[ERROR] ${RED}Invalid hostname format.${WHITE}"
+    fi
 done
+
 
 ################################
 # Gathering non-root user data #
