@@ -622,3 +622,65 @@ echo
 ### ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ ###
 
 
+################################
+# Setting up working directory #
+################################
+
+# Create directories
+mkdir -p "$HOME/vaultwarden" || { echo -e "${RED} Failed to create directorie${NC}"; exit 1; }
+
+# Notify the creation of the directories
+echo -e "${GREEN} Created directorie: 'vaultwarden'${NC}"
+
+# Set the WORK_DIR variable
+WORK_DIR=$HOME/vaultwarden
+
+echo
+echo -e "${GREEN} Working directory:${NC} $WORK_DIR"
+echo
+
+
+#######################################################
+# Start the installation of Docker and Docker Compose #
+#######################################################
+
+# Manually Stop the unattended-upgr Process (if running)
+# Stops the automatic updates temporarily, allowing install to proceed
+sudo systemctl stop unattended-upgrades
+
+echo
+echo -e "${GREEN} Starting the installation of Docker and Docker Compose (v2)...${NC}"
+echo
+
+# Update apt package index
+sudo apt-get update || { echo -e "${RED} Failed to update package index${NC}"; exit 1; }
+
+# Install prerequisites
+sudo apt-get install -y ca-certificates curl gnupg lsb-release || { echo -e "${RED} Failed to install prerequisites${NC}"; exit 1; }
+
+# Add Docker’s official GPG key
+sudo mkdir -p /etc/apt/keyrings && curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg || { echo -e "${RED} Failed to add Docker GPG key${NC}"; exit 1; }
+
+# Set up the Docker repository
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null || { echo -e "${RED} Failed to set up Docker repository${NC}"; exit 1; }
+
+# Update the apt package index again
+sudo apt-get update || { echo -e "${RED} Failed to update package index after adding Docker repository${NC}"; exit 1; }
+
+# Install Docker Engine, CLI, containerd, and Compose plugin
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin || { echo -e "${RED} Failed to install Docker components${NC}"; exit 1; }
+
+# Add current user to Docker Group
+sudo usermod -aG docker $(whoami) || { echo -e "${RED} Failed to add the current user to the Docker group${NC}"; exit 1; }
+
+# Verify installation
+sudo docker --version && docker compose version || { echo -e "${RED} Docker installation verification failed${NC}"; exit 1; }
+
+# ensure package manager status is okay
+sudo dpkg --configure -a
+
+echo
+echo -e "${GREEN} Docker and Docker Compose(v2) installation completed.${NC}"
+echo
+
+
