@@ -38,8 +38,8 @@ DEFAULT_IMAGE_URL="https://cloud.debian.org/images/cloud/bookworm/latest/debian-
 # Check if libguestfs-tools is installed
 if ! dpkg -l | grep -q libguestfs-tools; then
    echo -e "${WHITE}[INFO] ${GREEN}libguestfs-tools is not installed. Installing it now...${WHITE}"
-   apt update -qq
-   apt install -y libguestfs-tools
+   apt-get update -qq
+   apt-get install -y libguestfs-tools
    echo -e "${WHITE}[INFO] ${GREEN}libguestfs-tools has been installed.${WHITE}"
 else
    echo -e "${WHITE}[INFO] ${GREEN}libguestfs-tools is already installed.${WHITE}"
