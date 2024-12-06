@@ -93,11 +93,13 @@ read -r CONTAINER_ID
 CONTAINER_ID="${CONTAINER_ID:-$NEXT_CONTAINER_ID}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected Container ID:${WHITE} $CONTAINER_ID"
 
+
 ########################
 # Determining Hostname #
 ########################
 
 reserved_names=("localhost" "domain" "local" "host" "broadcasthost" "localdomain" "loopback" "wpad" "gateway" "dns" "mail" "ftp" "web")
+
 is_reserved_name() {
     local input_name=$1
     for name in "${reserved_names[@]}"; do
@@ -108,14 +110,14 @@ is_reserved_name() {
     return 1
 }
 
+DEFAULT_HOSTNAME="deblxc"
+
 while true; do
     echo
-    echo -ne "${WHITE}[INFO] ${YELLOW}Enter hostname for the container:${WHITE} "
+    echo -ne "${WHITE}[INFO] ${YELLOW}Enter hostname for the container [default: $DEFAULT_HOSTNAME]:${WHITE} "
     read -r HOSTNAME
-    if [[ -z "$HOSTNAME" ]]; then
-        echo -e "${WHITE}[ERROR] ${RED}Hostname cannot be empty.${WHITE}"
-        continue
-    fi
+    HOSTNAME="${HOSTNAME:-$DEFAULT_HOSTNAME}"
+
     if is_reserved_name "$HOSTNAME"; then
         echo -e "${WHITE}[ERROR] ${RED}Invalid hostname. Reserved name.${WHITE}"
     elif [[ "$HOSTNAME" =~ ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$ ]]; then
@@ -125,6 +127,7 @@ while true; do
         echo -e "${WHITE}[ERROR] ${RED}Invalid hostname format.${WHITE}"
     fi
 done
+
 
 ################################
 # Gathering non-root user data #
