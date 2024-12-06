@@ -803,3 +803,53 @@ fi
 echo
 echo -e "${GREEN} .env file created successfully:${NC} $file_path"
 echo
+
+
+###############
+# Vaultwarden #
+###############
+
+# Renew the WORK_DIR variable
+WORK_DIR=$HOME/vaultwarden
+
+# Take ownership of the working directory
+sudo chown -R $(whoami):$(whoami) $WORK_DIR
+
+# Prompt user for input
+echo -ne "${GREEN} Enter Time Zone (e.g. Europe/Berlin):${NC} "; read TZONE;
+echo
+
+# Check if the entered time zone is valid
+TZONES=$(timedatectl list-timezones) # Get list of time zones
+VALID_TZ=0 # Flag to check if TZONE is valid
+for tz in $TZONES; do
+    if [[ "$TZONE" == "$tz" ]]; then
+        VALID_TZ=1 # The entered time zone is valid
+        break
+    fi
+done
+
+# Prompt user until a valid time zone is entered
+while [[ $VALID_TZ -eq 0 ]]; do
+    echo -e "${RED} Invalid Time Zone. Please enter a valid time zone (e.g., Europe/Berlin).${NC}"
+    echo
+    echo -ne "${GREEN} Enter Time Zone:${NC} "; read TZONE;
+    echo
+    for tz in $TZONES; do
+        if [[ "$TZONE" == "$tz" ]]; then
+            VALID_TZ=1 # The entered time zone is valid
+            break
+        fi
+    done
+done
+
+echo -ne "${GREEN} Enter NPM Port Number(49152-65535):${NC} "; read PORTN;
+
+# Check if the port number is within the specified range
+while [[ $PORTN -lt 49152 || $PORTN -gt 65535 ]]; do
+    echo -e "${RED} Port number is out of the allowed range. Please enter a number between 49152 and 65535.${NC}"
+    echo -ne "${GREEN} Enter NPM Port Number(49152-65535):${NC} "; read PORTN;
+done
+
+echo
+
