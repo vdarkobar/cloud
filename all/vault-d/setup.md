@@ -16,7 +16,7 @@ example:
   
 #### *Decide what you will use for*:
   
-> Domain name of your website, Vaultwarden Subdomain, Port Number and Time Zone.  
+> Domain name of your website, Vaultwarden Subdomain, Port Number, Time Zone and Admin password.  
   
 #### Command will add *ADMIN TOKEN* to *.env* file, used to log in at:
 ```
