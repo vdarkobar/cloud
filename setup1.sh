@@ -193,7 +193,6 @@ is_reserved_name() {
 DEFAULT_HOSTNAME="debvm"
 
 while true; do
-    echo
     echo -ne "${WHITE}[INFO] ${YELLOW}Enter hostname for the container [default: $DEFAULT_HOSTNAME]:${WHITE} "
     read -r HOSTNAME
     HOSTNAME="${HOSTNAME:-$DEFAULT_HOSTNAME}"
@@ -207,7 +206,7 @@ while true; do
         echo -e "${WHITE}[ERROR] ${RED}Invalid hostname format.${WHITE}"
     fi
 done
-
+echo
 
 ################################
 # Gathering non-root user data #
