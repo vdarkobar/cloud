@@ -9,11 +9,13 @@ RED='\033[0;31m'
 YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
 
+
 ########################################################
 # Define ANSI escape sequence to reset font to default #
 ########################################################
 
 NC='\033[0m'
+
 
 #################
 # Intro message #
@@ -24,6 +26,7 @@ echo -e "${GREEN} Proxmox VE:${NC}"
 sleep 1
 echo -e "${GREEN} The script generates a new Debian LXC Template and sets up a non-root user to improve security.${NC}"
 echo
+
 
 ###############################################
 # Gathering storage information for templates #
@@ -75,6 +78,7 @@ while true; do
         break
     fi
 done
+
 
 ############################
 # Determining Container ID #
@@ -173,6 +177,7 @@ while true; do
     fi
 done
 
+
 #######################################
 # Obtaining lates Debian LXC Template #
 #######################################
@@ -220,6 +225,7 @@ echo
 echo -e "${GREEN} Template located at:${NC}" $template_path
 echo
 
+
 #########################
 # Creating LXC Template #
 #########################
@@ -246,10 +252,36 @@ pct create $CONTAINER_ID $template_path \
 # Allow the container to initialize
 sleep 5
 
+echo
+echo -e "${WHITE}[INFO] ${YELLOW}Configuring locales in the container to avoid locale warnings...${WHITE}"
+echo
+pct exec $CONTAINER_ID -- bash -c "
+    apt update -y && \
+    apt upgrade -y && \
+    apt install -y locales && \
+    sed -i 's/^# *en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen en_US.UTF-8 && \
+    update-locale LANG=en_US.UTF-8
+"
+# Optional: Ensure locale variables are set system-wide (if desired)
+pct exec $CONTAINER_ID -- bash -c "echo 'LANG=en_US.UTF-8' >> /etc/environment"
+pct exec $CONTAINER_ID -- bash -c "echo 'LC_ALL=en_US.UTF-8' >> /etc/environment"
+echo
+echo -e "${WHITE}[INFO] ${GREEN}Locale configuration completed successfully.${WHITE}"
+echo
+
+# Set timezone to Europe/Berlin
+#echo
+#echo -e "${WHITE}[INFO] ${YELLOW}Setting the timezone to Europe/Berlin...${WHITE}"
+#pct exec $CONTAINER_ID -- bash -c "
+#    ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime && \
+#    echo 'Europe/Berlin' > /etc/timezone
+#"
+#echo -e "${WHITE}[INFO] ${GREEN}Timezone set to Europe/Berlin successfully.${WHITE}"
+#echo
+
 # Add user and configure the container
 pct exec $CONTAINER_ID -- bash -c "
-apt update -y && \
-apt upgrade -y && \
 apt install -y sudo cloud-init && \
 adduser --gecos ',,,,' --disabled-password $username && \
 usermod -aG sudo $username && \
@@ -292,14 +324,15 @@ echo "tags: $TAGS" >> /etc/pve/lxc/$CONTAINER_ID.conf
 echo 'description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/><br>' >> /etc/pve/lxc/$CONTAINER_ID.conf
 
 echo
-echo -e " ${YELLOW}Stopping container ${WHITE}$CONTAINER_ID ${YELLOW}and converting it to Template...${NC}"
+echo -e " ${YELLOW}Stopping container ${WHITE}$CONTAINER_ID ($HOSTNAME) ${YELLOW}and converting it to Template...${NC}"
 pct stop $CONTAINER_ID
 pct template $CONTAINER_ID
 
 if [ $? -eq 0 ]; then
-    echo -e " ${GREEN}Container ${WHITE}$CONTAINER_ID ${GREEN}successfully converted to Template.${NC}"
+    echo -e " ${GREEN}Container ${WHITE}$CONTAINER_ID ($HOSTNAME) ${GREEN}successfully converted to Template.${NC}"
+    echo
     echo -e " ${GREEN}Any clones from this template will have SSH keys regenerated automatically via Cloud-Init on first boot.${NC}"
 else
-    echo -e "${RED}Failed to convert container $CONTAINER_ID to Template.${NC}"
+    echo -e "${RED}Failed to convert container $CONTAINER_ID ($HOSTNAME) to Template.${NC}"
     exit 1
 fi
