@@ -92,7 +92,7 @@ echo -e "${GREEN} You'll be asked to enter: ${NC}"
 echo -e " - Public Key to configure your SSH access"
 echo -e " - Domain name for your website, Vaultwarden Subdomain"
 echo -e " - Port Number and Time Zone"
-echo
+echo -e " - Admin password"
 echo
 
 
