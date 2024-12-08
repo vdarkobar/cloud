@@ -200,12 +200,12 @@ else
 fi
 
 # Backup the existing 50unattended-upgrades file
-if [ ! -f /etc/apt/apt.conf.d/50unattended-upgrades.backup ]; then
-    sudo cp /etc/apt/apt.conf.d/50unattended-upgrades /etc/apt/apt.conf.d/50unattended-upgrades.backup
-    echo -e "${GREEN} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${GREEN}created.${NC}"
-else
-    echo -e "${YELLOW} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${YELLOW}already exists. Skipping backup.${NC}"
-fi
+#if [ ! -f /etc/apt/apt.conf.d/50unattended-upgrades.backup ]; then
+#    sudo cp /etc/apt/apt.conf.d/50unattended-upgrades /etc/apt/apt.conf.d/50unattended-upgrades.backup
+#    echo -e "${GREEN} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${GREEN}created.${NC}"
+#else
+#    echo -e "${YELLOW} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${YELLOW}already exists. Skipping backup.${NC}"
+#fi
 
 # To preserve fail2ban custom settings...
 if ! sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local; then
