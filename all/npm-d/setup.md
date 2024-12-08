@@ -17,6 +17,12 @@
 </p>  
   
 ---  
+
+### Default Administrator User
+```
+Email:    admin@example.com
+Password: changeme
+```
   
 ### Create <a href="https://dash.cloudflare.com/profile/api-tokens">CloudFlare API Token</a>.  
 
