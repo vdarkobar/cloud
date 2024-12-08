@@ -1031,15 +1031,26 @@ HOSTNAME=$(hostname -s)
 # Method 1: Using awk
 DOMAIN_LOCAL=$(awk -F' ' '/^domain/ {print $2; exit}' /etc/resolv.conf)
 if [[ -n "$DOMAIN_LOCAL" ]]; then
-    echo -e "${GREEN} Domain name found using:${NC} awk"
+    echo -e "${GREEN} Domain name found using:${NC} awk (domain line)"
 else
     # Method 2: Using sed
     DOMAIN_LOCAL=$(sed -n 's/^domain //p' /etc/resolv.conf)
     if [[ -n "$DOMAIN_LOCAL" ]]; then
-        echo -e "${GREEN} Domain name found using:${NC} sed"
+        echo -e "${GREEN} Domain name found using:${NC} sed (domain line)"
     else
-        echo -e "${RED} Domain name not found using available methods .${NC}"
-        exit 1
+        # Backup: Check the 'search' line
+        DOMAIN_LOCAL=$(awk -F' ' '/^search/ {print $2; exit}' /etc/resolv.conf)
+        if [[ -n "$DOMAIN_LOCAL" ]]; then
+            echo -e "${GREEN} Domain name found using:${NC} awk (search line)"
+        else
+            DOMAIN_LOCAL=$(sed -n 's/^search //p' /etc/resolv.conf)
+            if [[ -n "$DOMAIN_LOCAL" ]]; then
+                echo -e "${GREEN} Domain name found using:${NC} sed (search line)"
+            else
+                echo -e "${RED} Domain name not found using available methods .${NC}"
+                exit 1
+            fi
+        fi
     fi
 fi
 
