@@ -54,3 +54,15 @@ Security:
 </pre>
 
 ### *<a href="https://dash.cloudflare.com/profile/api-tokens">CloudFlare Global API Key</a>*
+
+### When using *dynamic IP address* (set by ISP)
+
+```
+    CNAME | example.com | YOUR dynamic DNS
+```
+example:
+```
+    CNAME | @ | <your subdomain>.duckdns.org>
+```
+
+
