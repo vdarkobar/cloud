@@ -62,7 +62,7 @@ Security:
 ```
 example:
 ```
-    CNAME | @ | <your_subdomain>.duckdns.org>
+    CNAME | example.com | <your_subdomain>.duckdns.org>
 ```
 
 
