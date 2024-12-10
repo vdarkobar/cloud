@@ -61,7 +61,7 @@ Security:
 
 ### When behind *dynamic IP address* (set by ISP)
 
-1. to link your public `IP` (dynamic) to domain name `example.com`:
+1. to link your public `IP` (dynamic) to domain name: `example.com`   
 ```
     CNAME | example.com | YOUR dynamic DNS
 ```
