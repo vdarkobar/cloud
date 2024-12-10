@@ -55,8 +55,11 @@ Security:
 
 ### *<a href="https://dash.cloudflare.com/profile/api-tokens">CloudFlare Global API Key</a>*
 
-### When using *dynamic IP address* (set by ISP)
+<br>
 
+### When behind *dynamic IP address* (set by ISP)
+
+1. to link your public `IP` (dynamic) to domain name `example.com`:
 ```
     CNAME | example.com | YOUR dynamic DNS
 ```
@@ -64,5 +67,8 @@ example:
 ```
     CNAME | example.com | <your_subdomain>.duckdns.org>
 ```
-
+2. to add subdomain for some service:
+```
+    CNAME | <service subdomain> | example.com
+```
 
