@@ -1050,30 +1050,6 @@ done
 sudo chown -R root:root $WORK_DIR/.secrets/ && sudo chmod -R 600 $WORK_DIR/.secrets/ || { echo -e "${RED} Failed to update secrets directory permissions.${NC}"; exit 1; }
 
 
-##########################
-# Define the path to config.php
-CONFIG_PATH="$WORK_DIR/files/config/config.php"
-
-# Check if config.php exists
-if [ ! -f "$CONFIG_PATH" ]; then
-    echo -e "${RED}Error: config.php not found at ${CONFIG_PATH}.${NC}"
-    exit 1
-fi
-
-# Determine overwrite settings based on subdomain
-if [ -z "$SDNAME" ]; then
-    # Only domain is set
-    sudo sed -i "s|'overwrite.cli.url' => 'http://localhost',|'overwrite.cli.url' => 'https://${DNAME}', 'overwritehost' => '${DNAME}', 'overwriteprotocol' => 'https',|g" "$CONFIG_PATH"
-    echo -e "${GREEN}Config updated for domain:${NC} ${DNAME}"
-else
-    # Subdomain is set
-    FULL_DOMAIN="${SDNAME}${DNAME}"
-    sudo sed -i "s|'overwrite.cli.url' => 'http://localhost',|'overwrite.cli.url' => 'https://${FULL_DOMAIN}', 'overwritehost' => '${FULL_DOMAIN}', 'overwriteprotocol' => 'https',|g" "$CONFIG_PATH"
-    echo -e "${GREEN}Config updated for subdomain:${NC} ${FULL_DOMAIN}"
-fi
-##########################
-
-
 ##########
 # Access #
 ##########
@@ -1141,6 +1117,32 @@ echo -e "${GREEN} Set Collabora Office url in the Nextcloud office app:${NC} htt
 echo
 echo -e "${GREEN} Configure Reverse proxy${NC} (NPM) ${GREEN}for external access.${NC}"
 echo
+
+
+##########################
+sleep 3
+
+# Define the path to config.php
+CONFIG_PATH="$WORK_DIR/files/config/config.php"
+
+# Check if config.php exists
+if [ ! -f "$CONFIG_PATH" ]; then
+    echo -e "${RED}Error: config.php not found at ${CONFIG_PATH}.${NC}"
+    exit 1
+fi
+
+# Determine overwrite settings based on subdomain
+if [ -z "$SDNAME" ]; then
+    # Only domain is set
+    sudo sed -i "s|'overwrite.cli.url' => 'http://localhost',|'overwrite.cli.url' => 'https://${DNAME}', 'overwritehost' => '${DNAME}', 'overwriteprotocol' => 'https',|g" "$CONFIG_PATH"
+    echo -e "${GREEN}Config updated for domain:${NC} ${DNAME}"
+else
+    # Subdomain is set
+    FULL_DOMAIN="${SDNAME}${DNAME}"
+    sudo sed -i "s|'overwrite.cli.url' => 'http://localhost',|'overwrite.cli.url' => 'https://${FULL_DOMAIN}', 'overwritehost' => '${FULL_DOMAIN}', 'overwriteprotocol' => 'https',|g" "$CONFIG_PATH"
+    echo -e "${GREEN}Config updated for subdomain:${NC} ${FULL_DOMAIN}"
+fi
+##########################
 
 
 ##########################
