@@ -188,14 +188,6 @@ else
     echo -e "${YELLOW} Backup of${NC} /etc/hosts ${YELLOW}already exists. Skipping backup.${NC}"
 fi
 
-# Backup the existing 50unattended-upgrades file
-#if [ ! -f /etc/apt/apt.conf.d/50unattended-upgrades.backup ]; then
-#    sudo cp /etc/apt/apt.conf.d/50unattended-upgrades /etc/apt/apt.conf.d/50unattended-upgrades.backup
-#    echo -e "${GREEN} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${GREEN}created.${NC}"
-#else
-#    echo -e "${YELLOW} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${YELLOW}already exists. Skipping backup.${NC}"
-#fi
-
 # To preserve fail2ban custom settings...
 if ! sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local; then
     echo -e "${RED} Failed to copy jail.conf to jail.local. Exiting.${NC}"
@@ -861,11 +853,6 @@ done
 read -s -p "Enter Vaultwarden Admin password: " VWPASS
 echo
 echo
-
-#sed -i "s|01|${DNAME}|" .env && \
-#sed -i "s|02|${SDNAME}|" .env && \
-#sed -i "s|03|${VWPORTN}|" .env && \
-#sed -i "s|04|${TZONE}|" .env &&
 
 # Automatically generate a unique salt using base64 encoding as recommended
 SALT=$(openssl rand -base64 32)
