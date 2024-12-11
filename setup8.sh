@@ -935,8 +935,28 @@ echo -ne "${GREEN} Enter Subdomain with . (dot) at the end, or just press Enter 
 echo
 echo -ne "${GREEN} Enter NextCloud Admin username: ${NC}"; read NCUNAME
 echo
-read -s -p "Enter Nextcloud Admin password: " NAPASS
-echo
+#read -s -p "Enter Nextcloud Admin password: " NAPASS
+
+# Nextcloud Admin password
+while true; do
+    echo -e "${YELLOW} Enter Nextcloud Admin password:${NC}"
+    read -s NAPASS
+    echo -e "${YELLOW} Retype Nextcloud Admin password:${NC}"
+    read -s NAPASS_CONFIRM
+    echo
+
+    if [[ "$NAPASS" == "$NAPASS_CONFIRM" ]]; then
+        if [[ -z "$NAPASS" ]]; then
+            echo -e "${RED}Error: Password cannot be empty. Please try again.${NC}"
+        else
+            echo -e "${GREEN} Password confirmed successfully.${NC}"
+            break
+        fi
+    else
+        echo -e "${RED}Error: Passwords do not match. Please try again.${NC}"
+    fi
+done
+
 echo
 echo -ne "${GREEN} Enter Collabora username: ${NC}"; read CUNAME
 echo
