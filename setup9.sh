@@ -94,6 +94,7 @@ echo
 
 while true; do
     read -p "$(echo -e "${YELLOW}Proceed with installation? [Y/n]: ${NC}")" choice
+    echo
     choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
 
     # Set default to "yes" if input is empty
@@ -101,6 +102,7 @@ while true; do
 
     case "$choice" in
         y|yes)
+            echo
             echo -e "${GREEN}Starting...${NC}"
             sleep 0.5
             break
