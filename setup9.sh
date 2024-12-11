@@ -841,7 +841,26 @@ while true; do
     fi
 done
 
-read -s -p "Enter Vaultwarden Admin password: " VWPASS
+# Vaultwarden Admin password
+while true; do
+    echo -e "${YELLOW}Enter Vaultwarden Admin password:${NC}"
+    read -s VWPASS
+    echo -e "${YELLOW}Retype Vaultwarden Admin password:${NC}"
+    read -s VWPASS_CONFIRM
+    echo
+
+    if [[ "$VWPASS" == "$VWPASS_CONFIRM" ]]; then
+        if [[ -z "$VWPASS" ]]; then
+            echo -e "${RED}Error: Password cannot be empty. Please try again.${NC}"
+        else
+            echo -e "${GREEN}Password confirmed successfully.${NC}"
+            break
+        fi
+    else
+        echo -e "${RED}Error: Passwords do not match. Please try again.${NC}"
+    fi
+done
+
 echo
 
 # Automatically generate a unique salt using base64 encoding as recommended
