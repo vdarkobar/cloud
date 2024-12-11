@@ -1133,12 +1133,6 @@ if [ ! -f "$CONFIG_PATH" ]; then
     exit 1
 fi
 
-# Check if config.php exists
-if [ ! -f "$CONFIG_PATH" ]; then
-    echo -e "${RED} Error: config.php not found at ${CONFIG_PATH} ${NC}"
-    exit 1
-fi
-
 # Determine overwrite settings based on subdomain
 if [ -z "$SDNAME" ]; then
     # Only domain is set
