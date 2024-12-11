@@ -631,7 +631,6 @@ echo
 # Stops the automatic updates temporarily, allowing install to proceed
 sudo systemctl stop unattended-upgrades
 
-echo
 echo -e "${GREEN} Starting the installation of Docker and Docker Compose (v2)...${NC}"
 echo
 
