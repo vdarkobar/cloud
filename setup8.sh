@@ -986,26 +986,6 @@ echo $CUNAME > $WORK_DIR/.secrets/collabora_admin_user.secret || { echo -e "${RE
 echo | openssl rand -base64 48 > $WORK_DIR/.secrets/mysql_root_password.secret || { echo -e "${RED} Failed to generate MySQL root password.${NC}"; exit 1; }
 echo | openssl rand -base64 20 > $WORK_DIR/.secrets/nc_mysql_password.secret || { echo -e "${RED} Failed to generate NextCloud MySQL password.${NC}"; exit 1; }
 
-# Main loop for docker compose up command
-while true; do
-    echo -ne "${GREEN} Execute docker compose now?${NC} (yes/no) "; read yn
-    echo
-    yn=$(echo "$yn" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
-    case $yn in
-        yes )
-            if ! sudo docker compose -f $WORK_DIR/docker-compose.yml up -d; then
-                echo -e "${RED} Docker compose up failed. Check docker and docker compose installation.${NC}";
-                exit 1;
-            fi
-            break;;
-        no ) exit;;
-        * ) echo -e "${RED} Please answer${NC} yes or no";;
-    esac
-done
-
-# Update permissions
-sudo chown -R root:root $WORK_DIR/.secrets/ && sudo chmod -R 600 $WORK_DIR/.secrets/ || { echo -e "${RED} Failed to update secrets directory permissions.${NC}"; exit 1; }
-
 
 #######
 # UFW #
@@ -1027,6 +1007,31 @@ if ! sudo ufw reload; then
     echo -e "${RED} Failed to reload UFW. Exiting.${NC}"
     exit 1
 fi
+
+
+######################
+# Run docker compose #
+######################
+
+# Main loop for docker compose up command
+while true; do
+    echo -ne "${GREEN} Execute docker compose now?${NC} (yes/no) "; read yn
+    echo
+    yn=$(echo "$yn" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
+    case $yn in
+        yes )
+            if ! sudo docker compose -f $WORK_DIR/docker-compose.yml up -d; then
+                echo -e "${RED} Docker compose up failed. Check docker and docker compose installation.${NC}";
+                exit 1;
+            fi
+            break;;
+        no ) exit;;
+        * ) echo -e "${RED} Please answer${NC} yes or no";;
+    esac
+done
+
+# Update permissions
+sudo chown -R root:root $WORK_DIR/.secrets/ && sudo chmod -R 600 $WORK_DIR/.secrets/ || { echo -e "${RED} Failed to update secrets directory permissions.${NC}"; exit 1; }
 
 
 ##########
