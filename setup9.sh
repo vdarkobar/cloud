@@ -789,13 +789,13 @@ WORK_DIR=$HOME/vaultwarden
 # Take ownership of the working directory
 sudo chown -R $(whoami):$(whoami) $WORK_DIR
 
-echo -ne "${GREEN}Enter Domain name (e.g. example.com): ${NC}"; read DNAME
+echo -ne "${YELLOW} Enter Domain name (e.g. example.com): ${NC}"; read DNAME
 echo
 
-echo -ne "${GREEN}Enter Vaultwarden Subdomain (e.g. pass or vw):${NC} "; read SDNAME
+echo -ne "${YELLOW} Enter Vaultwarden Subdomain (e.g. vault or vw):${NC} "; read SDNAME
 echo
 
-echo -ne "${GREEN}Enter Vaultwarden Port Number(49152-65535):${NC} "; read VWPORTN;
+echo -ne "${YELLOW} Enter Vaultwarden Port Number(49152-65535):${NC} "; read VWPORTN;
 # Check if the port number is within the specified range
 while [[ $VWPORTN -lt 49152 || $VWPORTN -gt 65535 ]]; do
     echo -e "${RED}Port number is out of the allowed range. Please enter a number between 49152 and 65535.${NC}"
@@ -820,7 +820,7 @@ if [ $? -ne 0 ] || [ -z "$TZONES" ]; then
 fi
 
 while true; do
-    echo -ne "${YELLOW}Enter Time Zone (default: $DEFAULT_TZ): ${NC}"
+    echo -ne "${YELLOW} Enter Time Zone (default: $DEFAULT_TZ): ${NC}"
     if ! read TZONE; then
         echo -e "${RED}Error: Failed to read input.${NC}"
         exit 1
@@ -833,7 +833,7 @@ while true; do
     # Validate timezone
     if echo "$TZONES" | grep -q "^$TZONE$"; then
         echo
-        echo -e "${GREEN}Time Zone selected: $TZONE${NC}"
+        echo -e "${GREEN} Time Zone selected: $TZONE${NC}"
         echo
         break
     else
@@ -843,9 +843,9 @@ done
 
 # Vaultwarden Admin password
 while true; do
-    echo -e "${YELLOW}Enter Vaultwarden Admin password:${NC}"
+    echo -e "${YELLOW} Enter Vaultwarden Admin password:${NC}"
     read -s VWPASS
-    echo -e "${YELLOW}Retype Vaultwarden Admin password:${NC}"
+    echo -e "${YELLOW} Retype Vaultwarden Admin password:${NC}"
     read -s VWPASS_CONFIRM
     echo
 
@@ -853,7 +853,7 @@ while true; do
         if [[ -z "$VWPASS" ]]; then
             echo -e "${RED}Error: Password cannot be empty. Please try again.${NC}"
         else
-            echo -e "${GREEN}Password confirmed successfully.${NC}"
+            echo -e "${GREEN} Password confirmed successfully.${NC}"
             break
         fi
     else
@@ -880,7 +880,7 @@ sed -i "s|04|${TZONE}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Tim
 #######
 
 echo
-echo -e "${GREEN}Preparing firewall for local access...${NC}"
+echo -e "${GREEN} Preparing firewall for local access...${NC}"
 sleep 0.5 # delay for 0.5 seconds
 echo
 
@@ -896,7 +896,7 @@ echo
 
 # Main loop for docker compose up command
 #while true; do
-#    echo -ne "${GREEN} Execute docker compose now?${NC} (yes/no) "; read yn
+#    echo -ne "${YELLOW} Execute docker compose now?${NC} (yes/no) "; read yn
 #    echo
 #    yn=$(echo "$yn" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
 #    case $yn in
@@ -914,7 +914,7 @@ echo
 
 # Main loop for docker compose up command
 while true; do
-    read -p "$(echo -e "${GREEN}Execute docker compose now? [Y/n]: ${NC}")" yn
+    read -p "$(echo -e "${YELLOW} Execute docker compose now? [Y/n]: ${NC}")" yn
     yn=$(echo "$yn" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
 
     # Set default to "yes" if input is empty
@@ -944,7 +944,7 @@ done
 ##########
 
 echo
-echo -e "${GREEN}Access Vaultwarden instance at${NC}"
+echo -e "${GREEN} Access Vaultwarden instance at${NC}"
 sleep 0.5 # delay for 0.5 seconds
 
 # Get the primary local IP address of the machine more reliably
@@ -980,7 +980,7 @@ echo
 ##########################
 
 while true; do
-    read -p "Do you want to reboot the server now (recommended)? (yes/no): " response
+    read -p " Do you want to reboot the server now (recommended)? (yes/no): " response
     echo
     case "${response,,}" in
         yes|y) echo -e "${GREEN} Rebooting the server...${NC}"; sudo reboot; break ;;
