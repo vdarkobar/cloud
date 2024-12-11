@@ -943,10 +943,6 @@ done
 # Access #
 ##########
 
-echo
-echo -e "${GREEN} Access Vaultwarden instance at${NC}"
-sleep 0.5 # delay for 0.5 seconds
-
 # Get the primary local IP address of the machine more reliably
 LOCAL_IP=$(ip route get 1.1.1.1 | awk '{print $7; exit}')
 # Get the short hostname directly
@@ -960,7 +956,7 @@ LOCAL_DOMAIN="${HOSTNAME}${DOMAIN_LOCAL:+.$DOMAIN_LOCAL}"
 echo
 echo -e "${GREEN} Vaultwarden requires${NC} https ${GREEN}connection for account creation.${NC}"
 echo
-echo -e "${GREEN} Configure Reverse proxy (NPM) for external access.${NC}"
+echo -e "${GREEN} Configure Reverse proxy${NC} (NPM) ${GREEN}for external access.${NC}"
 echo
 echo -e "${GREEN} External access:${NC} $SDNAME.$DNAME"
 echo
