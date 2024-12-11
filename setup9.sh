@@ -895,19 +895,46 @@ echo
 ######################
 
 # Main loop for docker compose up command
+#while true; do
+#    echo -ne "${GREEN} Execute docker compose now?${NC} (yes/no) "; read yn
+#    echo
+#    yn=$(echo "$yn" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
+#    case $yn in
+#        yes )
+#            if ! sudo docker compose --env-file $WORK_DIR/.env -f $WORK_DIR/docker-compose.yml up -d; then
+#                echo -e "${RED} Docker compose up failed. Check docker and docker compose installation.${NC}";
+#                exit 1;
+#            fi
+#            break;;
+#        no ) exit;;
+#        * ) echo -e "${RED} Please answer${NC} yes or no";;
+#    esac
+#done
+
+
+# Main loop for docker compose up command
 while true; do
-    echo -ne "${GREEN} Execute docker compose now?${NC} (yes/no) "; read yn
-    echo
+    read -p "$(echo -e "${GREEN}Execute docker compose now? [Y/n]: ${NC}")" yn
     yn=$(echo "$yn" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
+
+    # Set default to "yes" if input is empty
+    yn=${yn:-yes}
+
     case $yn in
-        yes )
-            if ! sudo docker compose --env-file $WORK_DIR/.env -f $WORK_DIR/docker-compose.yml up -d; then
-                echo -e "${RED} Docker compose up failed. Check docker and docker compose installation.${NC}";
-                exit 1;
+        y|yes)
+            if ! sudo docker compose --env-file "$WORK_DIR/.env" -f "$WORK_DIR/docker-compose.yml" up -d; then
+                echo -e "${RED}Docker compose up failed. Check Docker and Docker Compose installation.${NC}"
+                exit 1
             fi
-            break;;
-        no ) exit;;
-        * ) echo -e "${RED} Please answer${NC} yes or no";;
+            break
+            ;;
+        n|no)
+            echo -e "${RED}Aborting...${NC}"
+            exit
+            ;;
+        *)
+            echo -e "${YELLOW}Invalid input. Please enter 'y' or 'n'.${NC}"
+            ;;
     esac
 done
 
