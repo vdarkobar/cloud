@@ -919,7 +919,8 @@ while true; do
 
     # Set default to "yes" if input is empty
     yn=${yn:-yes}
-
+    echo
+    
     case $yn in
         y|yes)
             if ! sudo docker compose --env-file "$WORK_DIR/.env" -f "$WORK_DIR/docker-compose.yml" up -d; then
