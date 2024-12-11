@@ -896,7 +896,6 @@ done
 # Access #
 ##########
 
-clear
 echo -e "${GREEN}Access Vaultwarden instance at${NC}"
 sleep 0.5 # delay for 0.5 seconds
 
