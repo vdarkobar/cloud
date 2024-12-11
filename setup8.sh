@@ -106,7 +106,7 @@ echo
 #######################################
 
 while true; do
-    read -p "$(echo -e "${YELLOW}Proceed with installation? [Y/n]: ${NC}")" choice
+    read -p "$(echo -e "${YELLOW} Proceed with installation? [Y/n]: ${NC}")" choice
     choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
     echo
 
@@ -115,7 +115,7 @@ while true; do
 
     case "$choice" in
         y|yes)
-            echo -e "${GREEN}Starting...${NC}"
+            echo -e "${GREEN} Starting...${NC}"
             echo
             sleep 0.5
             break
@@ -910,7 +910,7 @@ if [ $? -ne 0 ] || [ -z "$TZONES" ]; then
 fi
 
 while true; do
-    echo -ne "${YELLOW}Enter Time Zone (default: $DEFAULT_TZ): ${NC}"
+    echo -ne "${YELLOW} Enter Time Zone (default: $DEFAULT_TZ): ${NC}"
     if ! read TZONE; then
         echo -e "${RED}Error: Failed to read input.${NC}"
         exit 1
@@ -921,11 +921,13 @@ while true; do
     fi
 
     # Validate timezone
+    echo
     if echo "$TZONES" | grep -q "^$TZONE$"; then
-        echo -e "${GREEN}Time Zone selected: $TZONE${NC}"
+        echo -e "${GREEN} Time Zone selected: $TZONE${NC}"
+        echo
         break
     else
-        echo -e "${RED}Invalid Time Zone. Please try again.${NC}"
+        echo -e "${RED} Invalid Time Zone. Please try again.${NC}"
     fi
 done
 
@@ -967,6 +969,7 @@ while [[ $NCPORTN -lt 49152 || $NCPORTN -gt 65535 ]]; do
     echo -ne "${GREEN} Enter NPM Port Number(49152-65535):${NC} "; read NCPORTN;
 done
 echo
+
 # Get the primary local IP address of the machine more reliably
 LIP=$(ip route get 1.1.1.1 | awk '{print $7; exit}')
 
@@ -994,7 +997,6 @@ echo | openssl rand -base64 20 > $WORK_DIR/.secrets/nc_mysql_password.secret || 
 # UFW #
 #######
 
-echo
 echo -e "${GREEN} Preparing firewall for local access...${NC}"
 sleep 0.5 # delay for 0.5 seconds
 echo
@@ -1017,6 +1019,7 @@ fi
 ######################
 
 # Main loop for docker compose up command
+echo
 while true; do
     read -p "$(echo -e "${YELLOW} Execute docker compose now? [Y/n]: ${NC}")" yn
     yn=$(echo "$yn" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
@@ -1052,6 +1055,7 @@ sudo chown -R root:root $WORK_DIR/.secrets/ && sudo chmod -R 600 $WORK_DIR/.secr
 ##########
 
 # Get the short hostname directly
+echo
 HOSTNAME=$(hostname -s)
 
 # Extract the domain name from /etc/resolv.conf
@@ -1111,7 +1115,7 @@ echo
 echo
 echo -e "${GREEN} Set Collabora Office url in the Nextcloud office app:${NC} https://code.$DNAME"
 echo
-echo -e "${RED} Configure Reverse proxy${NC} (NPM) ${GREEN}for external access.${NC}"
+echo -e "${GREEN} Configure Reverse proxy${NC} (NPM) ${GREEN}for external access.${NC}"
 echo
 
 
