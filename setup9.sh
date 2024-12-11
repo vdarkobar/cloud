@@ -771,7 +771,7 @@ fi
 echo -e "${GREEN} Creating .env file...:${NC} $file_path"
 
 sudo tee "$file_path" > /dev/null <<EOF || { echo "Error: Failed to create $file_path"; exit 1; }
-ADMIN_TOKEN='CHANGE_ADMIN_TOKEN'
+ADMIN_TOKEN=CHANGE_ADMIN_TOKEN
 DOMAINNAME=01
 SUBDOMAIN=02
 VWPORTN=03
