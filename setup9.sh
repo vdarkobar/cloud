@@ -821,7 +821,6 @@ fi
 
 while true; do
     echo -ne "${YELLOW}Enter Time Zone (default: $DEFAULT_TZ): ${NC}"
-    echo
     if ! read TZONE; then
         echo -e "${RED}Error: Failed to read input.${NC}"
         exit 1
@@ -835,6 +834,7 @@ while true; do
     if echo "$TZONES" | grep -q "^$TZONE$"; then
         echo
         echo -e "${GREEN}Time Zone selected: $TZONE${NC}"
+        echo
         break
     else
         echo -e "${RED}Invalid Time Zone. Please try again.${NC}"
@@ -860,8 +860,6 @@ while true; do
         echo -e "${RED}Error: Passwords do not match. Please try again.${NC}"
     fi
 done
-
-echo
 
 # Automatically generate a unique salt using base64 encoding as recommended
 SALT=$(openssl rand -base64 32)
