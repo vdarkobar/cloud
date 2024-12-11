@@ -886,7 +886,7 @@ while true; do
     yn=$(echo "$yn" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
     case $yn in
         yes )
-            if ! sudo docker compose -f $WORK_DIR/docker-compose.yml up -d; then
+            if ! sudo docker compose --env-file $WORK_DIR/.env -f $WORK_DIR/docker-compose.yml up -d; then
                 echo -e "${RED} Docker compose up failed. Check docker and docker compose installation.${NC}";
                 exit 1;
             fi
