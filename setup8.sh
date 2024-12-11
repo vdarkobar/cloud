@@ -929,11 +929,11 @@ while true; do
     fi
 done
 
-echo -ne "${GREEN} Enter Domain name (e.g. example.com): ${NC}"; read DNAME
+echo -ne "${YELLOW} Enter Domain name (e.g. example.com): ${NC}"; read DNAME
 echo
-echo -ne "${GREEN} Enter Subdomain with . (dot) at the end, or just press Enter to default to Domain name: ${NC}"; read SDNAME
+echo -ne "${YELLOW} Enter Subdomain with . (dot) at the end, or just press Enter to default to Domain name: ${NC}"; read SDNAME
 echo
-echo -ne "${GREEN} Enter NextCloud Admin username: ${NC}"; read NCUNAME
+echo -ne "${YELLOW} Enter NextCloud Admin username: ${NC}"; read NCUNAME
 echo
 #read -s -p "Enter Nextcloud Admin password: " NAPASS
 
@@ -958,9 +958,9 @@ while true; do
 done
 
 echo
-echo -ne "${GREEN} Enter Collabora username: ${NC}"; read CUNAME
+echo -ne "${YELLOW} Enter Collabora username: ${NC}"; read CUNAME
 echo
-echo -ne "${GREEN} Enter NextCloud Port Number(49152-65535):${NC} "; read NCPORTN;
+echo -ne "${YELLOW} Enter NextCloud Port Number(49152-65535):${NC} "; read NCPORTN;
 # Check if the port number is within the specified range
 while [[ $NCPORTN -lt 49152 || $NCPORTN -gt 65535 ]]; do
     echo -e "${RED} Port number is out of the allowed range. Please enter a number between 49152 and 65535.${NC}"
