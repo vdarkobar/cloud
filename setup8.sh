@@ -2,19 +2,13 @@
 
 clear
 
-##############################################################
-# Define ANSI escape sequence for green, red and yellow font #
-##############################################################
+##################################################################
+# ANSI escape sequence for green, red, yellow font and no collor #
+##################################################################
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
-
-
-########################################################
-# Define ANSI escape sequence to reset font to default #
-########################################################
-
 NC='\033[0m'
 
 
@@ -112,31 +106,28 @@ echo
 #######################################
 
 while true; do
-    echo -e "${GREEN} Start installation and configuration?${NC} (yes/no) "
-    echo
-    read choice
-    echo
+    read -p "$(echo -e "${YELLOW}Proceed with installation? [Y/n]: ${NC}")" choice
     choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
+    echo
 
-    # Check if user entered "yes"
-    if [[ "$choice" == "yes" ]]; then
-        # Confirming the start of the script
-        echo
-        echo -e "${GREEN} Starting... ${NC}"
-        sleep 0.5 # delay for 0.5 second
-        echo
-        break
+    # Set default to "yes" if input is empty
+    choice=${choice:-yes}
 
-    # Check if user entered "no"
-    elif [[ "$choice" == "no" ]]; then
-        echo -e "${RED} Aborting script. ${NC}"
-        exit
-
-    # If user entered anything else, ask them to correct it
-    else
-        echo -e "${YELLOW} Invalid input. Please enter${NC} 'yes' or 'no'"
-        echo
-    fi
+    case "$choice" in
+        y|yes)
+            echo -e "${GREEN}Starting...${NC}"
+            echo
+            sleep 0.5
+            break
+            ;;
+        n|no)
+            echo -e "${RED}Aborting script.${NC}"
+            exit
+            ;;
+        *)
+            echo -e "${YELLOW}Invalid input. Please enter 'y' or 'n'.${NC}"
+            ;;
+    esac
 done
 
 
@@ -198,14 +189,6 @@ if [ ! -f /etc/hosts.backup ]; then
 else
     echo -e "${YELLOW} Backup of${NC} /etc/hosts ${YELLOW}already exists. Skipping backup.${NC}"
 fi
-
-# Backup the existing 50unattended-upgrades file
-#if [ ! -f /etc/apt/apt.conf.d/50unattended-upgrades.backup ]; then
-#    sudo cp /etc/apt/apt.conf.d/50unattended-upgrades /etc/apt/apt.conf.d/50unattended-upgrades.backup
-#    echo -e "${GREEN} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${GREEN}created.${NC}"
-#else
-#    echo -e "${YELLOW} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${YELLOW}already exists. Skipping backup.${NC}"
-#fi
 
 # To preserve fail2ban custom settings...
 if ! sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local; then
@@ -1015,18 +998,28 @@ fi
 
 # Main loop for docker compose up command
 while true; do
-    echo -ne "${GREEN} Execute docker compose now?${NC} (yes/no) "; read yn
-    echo
+    read -p "$(echo -e "${YELLOW} Execute docker compose now? [Y/n]: ${NC}")" yn
     yn=$(echo "$yn" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
+
+    # Set default to "yes" if input is empty
+    yn=${yn:-yes}
+    echo
+    
     case $yn in
-        yes )
-            if ! sudo docker compose -f $WORK_DIR/docker-compose.yml up -d; then
-                echo -e "${RED} Docker compose up failed. Check docker and docker compose installation.${NC}";
-                exit 1;
+        y|yes)
+            if ! sudo docker compose --env-file "$WORK_DIR/.env" -f "$WORK_DIR/docker-compose.yml" up -d; then
+                echo -e "${RED}Docker compose up failed. Check Docker and Docker Compose installation.${NC}"
+                exit 1
             fi
-            break;;
-        no ) exit;;
-        * ) echo -e "${RED} Please answer${NC} yes or no";;
+            break
+            ;;
+        n|no)
+            echo -e "${RED}Aborting...${NC}"
+            exit
+            ;;
+        *)
+            echo -e "${YELLOW}Invalid input. Please enter 'y' or 'n'.${NC}"
+            ;;
     esac
 done
 
@@ -1088,10 +1081,6 @@ fi
 # Directly concatenate HOSTNAME and DOMAIN, leveraging shell parameter expansion for conciseness
 LOCAL_DOMAIN="${HOSTNAME}${DOMAIN_LOCAL:+.$DOMAIN_LOCAL}"
 
-echo
-echo -e "${GREEN} Access Nextcloud instance at${NC}"
-sleep 0.5 # delay for 0.5 seconds
-
 # Display access instructions
 echo
 echo -e "${GREEN} Local access:${NC} $LOCAL_IP:$NCPORTN"
@@ -1102,7 +1091,7 @@ echo
 echo
 echo -e "${GREEN} Set Collabora Office url in the Nextcloud office app:${NC} https://code.$DNAME"
 echo
-echo -e "${RED} Configure Reverse proxy (NPM) for external access.${NC}"
+echo -e "${RED} Configure Reverse proxy${NC} (NPM) ${GREEN}for external access.${NC}"
 echo
 
 
