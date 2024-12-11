@@ -701,53 +701,45 @@ networks:
     driver: bridge
 
 services:
- 
-  # Vaultwarden - Open Source Password Manager.
   vaultwarden:
     image: vaultwarden/server:latest
-    container_name: vaultwarden # change for multiple instances
+    container_name: vaultwarden
     restart: always
-
     networks:
       - vw
-
     ports:
-      - $VWPORTN:80
-      #- 3012:3012
-
+      - ${VWPORTN}:80
     volumes:
       - ./vw-data:/data
       - /var/log/docker:/var/log/docker
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-
     environment:
-      - ADMIN_TOKEN=$ADMIN_TOKEN
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
       - WEBSOCKET_ENABLED=true
-      - SIGNUPS_ALLOWED=true # Change to false after first login
-      - INVITATIONS_ALLOWED=true # Send invitation using admin page
+      # Change to false after first login
+      - SIGNUPS_ALLOWED=true
+      # Invitations allowed
+      - INVITATIONS_ALLOWED=true
       - LOG_FILE=/var/log/docker/bitwarden.log
-      - DOMAIN=https://$SUBDOMAIN.$DOMAINNAME
+      - DOMAIN=https://${SUBDOMAIN}.${DOMAINNAME}
 
-  # Watchtower - automating Docker container base image updates.
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower-vw
     restart: always
-
     networks:
       - vw
-
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
     environment:
-      - TZ=$TZ
+      - TZ=${TZ}
       - WATCHTOWER_DEBUG=true
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_REMOVE_VOLUMES=true
       - WATCHTOWER_INCLUDE_STOPPED=true
-      - WATCHTOWER_SCHEDULE=0 30 5 * * * # Everyday at 5:30
+      # Everyday at 5:30
+      - WATCHTOWER_SCHEDULE="0 30 5 * * *"
 EOF
 
 # Check if the file was created successfully
