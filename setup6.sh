@@ -916,32 +916,39 @@ WORK_DIR=$HOME/npm
 # Take ownership of the working directory
 sudo chown -R $(whoami):$(whoami) $WORK_DIR
 
-# Prompt user for input
-echo -ne "${GREEN} Enter Time Zone (e.g. Europe/Berlin):${NC} "; read TZONE;
-echo
+# Check if timedatectl is available
+if ! command -v timedatectl &> /dev/null; then
+    echo -e "${RED}Error: timedatectl command not found.${NC}"
+    exit 1
+fi
 
-# Check if the entered time zone is valid
-TZONES=$(timedatectl list-timezones) # Get list of time zones
-VALID_TZ=0 # Flag to check if TZONE is valid
-for tz in $TZONES; do
-    if [[ "$TZONE" == "$tz" ]]; then
-        VALID_TZ=1 # The entered time zone is valid
-        break
+DEFAULT_TZ="Europe/Berlin"
+TZONES="$(timedatectl list-timezones 2>/dev/null)"
+
+# Check if TZONES retrieval succeeded
+if [ $? -ne 0 ] || [ -z "$TZONES" ]; then
+    echo -e "${RED}Error: Failed to retrieve list of time zones.${NC}"
+    exit 1
+fi
+
+while true; do
+    echo -ne "${YELLOW}Enter Time Zone (default: $DEFAULT_TZ): ${NC}"
+    if ! read TZONE; then
+        echo -e "${RED}Error: Failed to read input.${NC}"
+        exit 1
     fi
-done
 
-# Prompt user until a valid time zone is entered
-while [[ $VALID_TZ -eq 0 ]]; do
-    echo -e "${RED} Invalid Time Zone. Please enter a valid time zone (e.g., Europe/Berlin).${NC}"
-    echo
-    echo -ne "${GREEN} Enter Time Zone:${NC} "; read TZONE;
-    echo
-    for tz in $TZONES; do
-        if [[ "$TZONE" == "$tz" ]]; then
-            VALID_TZ=1 # The entered time zone is valid
-            break
-        fi
-    done
+    if [ -z "$TZONE" ]; then
+        TZONE="$DEFAULT_TZ"
+    fi
+
+    # Validate timezone
+    if echo "$TZONES" | grep -q "^$TZONE$"; then
+        echo -e "${GREEN}Time Zone selected: $TZONE${NC}"
+        break
+    else
+        echo -e "${RED}Invalid Time Zone. Please try again.${NC}"
+    fi
 done
 
 echo -ne "${GREEN} Enter NPM Port Number(49152-65535):${NC} "; read PORTN;
