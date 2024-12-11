@@ -2,19 +2,13 @@
 
 clear
 
-##############################################################
-# Define ANSI escape sequence for green, red and yellow font #
-##############################################################
+##################################################################
+# ANSI escape sequence for green, red, yellow font and no collor #
+##################################################################
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
-
-
-########################################################
-# Define ANSI escape sequence to reset font to default #
-########################################################
-
 NC='\033[0m'
 
 
@@ -26,7 +20,6 @@ NC='\033[0m'
 HOSTNAME=$(hostname -s)
 
 # Extract the domain name from /etc/resolv.conf
-
 # Method 1: Using awk
 DOMAIN_LOCAL=$(awk -F' ' '/^domain/ {print $2; exit}' /etc/resolv.conf)
 if [[ -n "$DOMAIN_LOCAL" ]]; then
@@ -54,7 +47,6 @@ else
 fi
 
 # IP Address extraction
-
 # Method 1: Using hostname -I to get the local IP address
 LOCAL_IP=$(hostname -I | awk '{print $1}') # Picks the first IP address
 if [[ -n "$LOCAL_IP" ]]; then
@@ -101,31 +93,26 @@ echo
 #######################################
 
 while true; do
-    echo -e "${GREEN} Start installation and configuration?${NC} (yes/no) "
-    echo
-    read choice
-    echo
+    read -p "$(echo -e "${GREEN}Proceed with installation? [Y/n]: ${NC}")" choice
     choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
 
-    # Check if user entered "yes"
-    if [[ "$choice" == "yes" ]]; then
-        # Confirming the start of the script
-        echo
-        echo -e "${GREEN} Starting... ${NC}"
-        sleep 0.5 # delay for 0.5 second
-        echo
-        break
+    # Set default to "yes" if input is empty
+    choice=${choice:-yes}
 
-    # Check if user entered "no"
-    elif [[ "$choice" == "no" ]]; then
-        echo -e "${RED} Aborting script. ${NC}"
-        exit
-
-    # If user entered anything else, ask them to correct it
-    else
-        echo -e "${YELLOW} Invalid input. Please enter${NC} 'yes' or 'no'"
-        echo
-    fi
+    case "$choice" in
+        y|yes)
+            echo -e "${GREEN}Starting...${NC}"
+            sleep 0.5
+            break
+            ;;
+        n|no)
+            echo -e "${RED}Aborting script.${NC}"
+            exit
+            ;;
+        *)
+            echo -e "${YELLOW}Invalid input. Please enter 'y' or 'n'.${NC}"
+            ;;
+    esac
 done
 
 
