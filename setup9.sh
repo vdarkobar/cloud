@@ -821,6 +821,7 @@ fi
 
 while true; do
     echo -ne "${YELLOW}Enter Time Zone (default: $DEFAULT_TZ): ${NC}"
+    echo
     if ! read TZONE; then
         echo -e "${RED}Error: Failed to read input.${NC}"
         exit 1
@@ -832,6 +833,7 @@ while true; do
 
     # Validate timezone
     if echo "$TZONES" | grep -q "^$TZONE$"; then
+        echo
         echo -e "${GREEN}Time Zone selected: $TZONE${NC}"
         break
     else
@@ -840,7 +842,6 @@ while true; do
 done
 
 read -s -p "Enter Vaultwarden Admin password: " VWPASS
-echo
 echo
 
 # Automatically generate a unique salt using base64 encoding as recommended
@@ -898,6 +899,7 @@ done
 # Access #
 ##########
 
+echo
 echo -e "${GREEN}Access Vaultwarden instance at${NC}"
 sleep 0.5 # delay for 0.5 seconds
 
