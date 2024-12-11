@@ -1120,7 +1120,7 @@ echo
 
 
 ##########################
-sleep 4
+sleep 5
 
 # Define the path to config.php
 CONFIG_PATH="$WORK_DIR/files/config/config.php"
