@@ -708,21 +708,21 @@ services:
     networks:
       - vw
     ports:
-      - ${VWPORTN}:80
+      - \$VWPORTN:80
     volumes:
       - ./vw-data:/data
       - /var/log/docker:/var/log/docker
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - ADMIN_TOKEN=${ADMIN_TOKEN}
+      - ADMIN_TOKEN=\$ADMIN_TOKEN
       - WEBSOCKET_ENABLED=true
       # Change to false after first login
       - SIGNUPS_ALLOWED=true
       # Invitations allowed
       - INVITATIONS_ALLOWED=true
       - LOG_FILE=/var/log/docker/bitwarden.log
-      - DOMAIN=https://${SUBDOMAIN}.${DOMAINNAME}
+      - DOMAIN=https://\$SUBDOMAIN.\$DOMAINNAME
 
   watchtower:
     image: containrrr/watchtower
@@ -733,7 +733,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - TZ=${TZ}
+      - TZ=\$TZ
       - WATCHTOWER_DEBUG=true
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_REMOVE_VOLUMES=true
