@@ -880,6 +880,26 @@ sed -i "s|02|${SDNAME}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Su
 sed -i "s|03|${VWPORTN}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Port Number in .env file.${NC}"; exit 1; }
 sed -i "s|04|${TZONE}|" $WORK_DIR/.env || { echo -e "${RED} Failed to update Time Zone in .env file.${NC}"; exit 1; }
 
+
+#######
+# UFW #
+#######
+
+echo
+echo -e "${GREEN}Preparing firewall for local access...${NC}"
+sleep 0.5 # delay for 0.5 seconds
+echo
+
+# Use the PORTN variable for the UFW rule
+sudo ufw allow "${VWPORTN}/tcp" comment "Vaultwarden custom port"
+sudo systemctl restart ufw
+echo
+
+
+######################
+# Run docker compose #
+######################
+
 # Main loop for docker compose up command
 while true; do
     echo -ne "${GREEN} Execute docker compose now?${NC} (yes/no) "; read yn
@@ -896,21 +916,6 @@ while true; do
         * ) echo -e "${RED} Please answer${NC} yes or no";;
     esac
 done
-
-
-#######
-# UFW #
-#######
-
-echo
-echo -e "${GREEN}Preparing firewall for local access...${NC}"
-sleep 0.5 # delay for 0.5 seconds
-echo
-
-# Use the PORTN variable for the UFW rule
-sudo ufw allow "${VWPORTN}/tcp" comment "Vaultwarden custom port"
-sudo systemctl restart ufw
-echo
 
 
 ##########
