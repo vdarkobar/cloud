@@ -1120,14 +1120,14 @@ echo
 
 
 ##########################
-sleep 3
+sleep 4
 
 # Define the path to config.php
 CONFIG_PATH="$WORK_DIR/files/config/config.php"
 
 # Check if config.php exists
 if [ ! -f "$CONFIG_PATH" ]; then
-    echo -e "${RED}Error: config.php not found at ${CONFIG_PATH}.${NC}"
+    echo -e "${RED} Error: config.php not found at ${CONFIG_PATH} ${NC}"
     exit 1
 fi
 
