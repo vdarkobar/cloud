@@ -518,6 +518,7 @@ fi
 
 # Ask the user for the public key
 while true; do
+    echo
     echo -e "${YELLOW} Please enter your public SSH key:${NC}"
     echo
     read public_key
