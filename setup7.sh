@@ -2,19 +2,13 @@
 
 clear
 
-##############################################################
-# Define ANSI escape sequence for green, red and yellow font #
-##############################################################
+#################################################################
+# ANSI escape sequence for green, red, yellow font and no color #
+#################################################################
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
-
-
-########################################################
-# Define ANSI escape sequence to reset font to default #
-########################################################
-
 NC='\033[0m'
 
 
@@ -98,31 +92,28 @@ echo
 #######################################
 
 while true; do
-    echo -e "${GREEN} Start installation and configuration?${NC} (yes/no) "
-    echo
-    read choice
-    echo
+    read -p "$(echo -e "${YELLOW}Proceed with installation? [Y/n]: ${NC}")" choice
     choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]') # Convert input to lowercase
+    echo
 
-    # Check if user entered "yes"
-    if [[ "$choice" == "yes" ]]; then
-        # Confirming the start of the script
-        echo
-        echo -e "${GREEN} Starting... ${NC}"
-        sleep 0.5 # delay for 0.5 second
-        echo
-        break
+    # Set default to "yes" if input is empty
+    choice=${choice:-yes}
 
-    # Check if user entered "no"
-    elif [[ "$choice" == "no" ]]; then
-        echo -e "${RED} Aborting script. ${NC}"
-        exit
-
-    # If user entered anything else, ask them to correct it
-    else
-        echo -e "${YELLOW} Invalid input. Please enter${NC} 'yes' or 'no'"
-        echo
-    fi
+    case "$choice" in
+        y|yes)
+            echo -e "${GREEN}Starting...${NC}"
+            echo
+            sleep 0.5
+            break
+            ;;
+        n|no)
+            echo -e "${RED}Aborting script.${NC}"
+            exit
+            ;;
+        *)
+            echo -e "${YELLOW}Invalid input. Please enter 'y' or 'n'.${NC}"
+            ;;
+    esac
 done
 
 
@@ -227,12 +218,12 @@ else
 fi
 
 # Backup the existing 50unattended-upgrades file
-if [ ! -f /etc/apt/apt.conf.d/50unattended-upgrades.backup ]; then
-    sudo cp /etc/apt/apt.conf.d/50unattended-upgrades /etc/apt/apt.conf.d/50unattended-upgrades.backup
-    echo -e "${GREEN} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${GREEN}created.${NC}"
-else
-    echo -e "${YELLOW} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${YELLOW}already exists. Skipping backup.${NC}"
-fi
+#if [ ! -f /etc/apt/apt.conf.d/50unattended-upgrades.backup ]; then
+#    sudo cp /etc/apt/apt.conf.d/50unattended-upgrades /etc/apt/apt.conf.d/50unattended-upgrades.backup
+#    echo -e "${GREEN} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${GREEN}created.${NC}"
+#else
+#    echo -e "${YELLOW} Backup of${NC} /etc/apt/apt.conf.d/50unattended-upgrades ${YELLOW}already exists. Skipping backup.${NC}"
+#fi
 
 # To preserve fail2ban custom settings...
 if ! sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local; then
@@ -292,14 +283,14 @@ sleep 0.5 # delay for 0.5 seconds
 echo
 
 # Extract the domain name from /etc/resolv.conf
-domain_name=$(awk -F' ' '/^domain/ {print $2; exit}' /etc/resolv.conf)
+# domain_name=$(awk -F' ' '/^domain/ {print $2; exit}' /etc/resolv.conf)
 
 # Get the host's IP address and hostname
 host_ip=$(hostname -I | awk '{print $1}')
 host_name=$(hostname)
 
 # Construct the new line for /etc/hosts
-new_line="$host_ip $host_name $host_name.$domain_name"
+new_line="$host_ip $host_name $host_name.$DOMAIN_LOCAL"
 
 # Create a temporary file with the desired contents
 {
