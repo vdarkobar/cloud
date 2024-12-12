@@ -1120,39 +1120,6 @@ echo
 
 
 ##########################
-echo -e "${YELLOW} Configuring${NC} config.pfp ${YELLOW}file. Please wait...${NC}"
-echo
-sleep 3
-
-# Define the path to config.php
-WORK_DIR=$HOME/nextcloud
-CONFIG_PATH="$WORK_DIR/files/config/config.php"
-
-# Determine overwrite settings based on subdomain
-if [ -z "$SDNAME" ]; then
-    # Only domain is set
-    sudo sed -i "s|'overwrite.cli.url' => 'http://localhost',|'overwrite.cli.url' => 'https://${DNAME}', 'overwritehost' => '${DNAME}', 'overwriteprotocol' => 'https',|g" "$CONFIG_PATH"
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN} Config updated for domain:${NC} ${DNAME}"
-        echo
-    else
-        echo -e "${RED}Error updating config for domain:${NC} ${DNAME}"
-    fi
-else
-    # Subdomain is set
-    FULL_DOMAIN="${SDNAME}${DNAME}"
-    sudo sed -i "s|'overwrite.cli.url' => 'http://localhost',|'overwrite.cli.url' => 'https://${FULL_DOMAIN}', 'overwritehost' => '${FULL_DOMAIN}', 'overwriteprotocol' => 'https',|g" "$CONFIG_PATH"
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN} Config updated for subdomain:${NC} ${FULL_DOMAIN}"
-        echo
-    else
-        echo -e "${RED}Error updating config for subdomain:${NC} ${FULL_DOMAIN}"
-    fi
-fi
-##########################
-
-
-##########################
 # Prompt user for reboot #
 ##########################
 
