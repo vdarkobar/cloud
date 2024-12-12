@@ -755,13 +755,30 @@ ask_admin_user() {
 
 # Function to ask for the Nextcloud admin password
 ask_admin_password() {
-    # Use -s option to hide password input
-    read -s -p "Enter Nextcloud admin password: " NEXTCLOUD_ADMIN_PASSWORD
-    echo  # Move to a new line
-    if [[ -z "$NEXTCLOUD_ADMIN_PASSWORD" ]]; then
-        echo -e "${YELLOW} The admin password cannot be empty. Please enter a valid password.${NC}"
-        ask_admin_password
-    fi
+    while true; do
+        # Use -s option to hide password input
+        echo -e "${YELLOW}Enter Nextcloud admin password:${NC}"
+        read -s NEXTCLOUD_ADMIN_PASSWORD
+        echo  # Move to a new line
+        echo -e "${YELLOW}Retype Nextcloud admin password:${NC}"
+        read -s CONFIRM_PASSWORD
+        echo  # Move to a new line
+
+        # Check if the password is empty
+        if [[ -z "$NEXTCLOUD_ADMIN_PASSWORD" || -z "$CONFIRM_PASSWORD" ]]; then
+            echo -e "${YELLOW} The admin password cannot be empty. Please enter a valid password.${NC}"
+            continue
+        fi
+
+        # Check if passwords match
+        if [[ "$NEXTCLOUD_ADMIN_PASSWORD" != "$CONFIRM_PASSWORD" ]]; then
+            echo -e "${RED} Passwords do not match. Please try again.${NC}"
+            continue
+        fi
+
+        # If everything is correct, break the loop
+        break
+    done
 }
 
 # Call functions to get user input
