@@ -1123,13 +1123,13 @@ CONFIG_PATH="$WORK_DIR/files/config/config.php"
 FULL_DOMAIN=$SDNAME$DNAME
 
 echo
-echo -e "${GREEN} Run command to configure${NC} config.php ${GREEN}if using only domain name:${NC} $DNAME"
+echo -e "${GREEN} Run this command to configure${NC} config.php ${GREEN}if using only domain name:${NC} $DNAME"
 echo
 echo "sudo sed -i \"s|'overwrite.cli.url' => 'http://localhost',|'overwrite.cli.url' => 'https://$DNAME', 'overwritehost' => '$DNAME', 'overwriteprotocol' => 'https',|g\" \"$CONFIG_PATH\""
 echo
 echo -e "${GREEN} or${NC}"
 echo
-echo -e "${GREEN} Run command to configure${NC} config.php ${GREEN}if using subdomain:${NC} ${FULL_DOMAIN}"
+echo -e "${GREEN} Run this command to configure${NC} config.php ${GREEN}if using subdomain:${NC} ${FULL_DOMAIN}"
 echo
 echo "sudo sed -i \"s|'overwrite.cli.url' => 'http://localhost',|'overwrite.cli.url' => 'https://${FULL_DOMAIN}', 'overwritehost' => '${FULL_DOMAIN}', 'overwriteprotocol' => 'https',|g\" \"$CONFIG_PATH\""
 echo
