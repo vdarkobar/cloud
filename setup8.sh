@@ -1112,7 +1112,6 @@ echo -e "${GREEN}             :${NC} $LOCAL_DOMAIN:$NCPORTN"
 echo
 echo -e "${GREEN} External access:${NC} $SDNAME$DNAME"
 echo
-echo
 echo -e "${GREEN} Set Collabora Office url in the Nextcloud office app:${NC} https://code.$DNAME"
 echo
 echo -e "${GREEN} Configure Reverse proxy${NC} (NPM) ${GREEN}for external access.${NC}"
@@ -1125,9 +1124,12 @@ FULL_DOMAIN=$SDNAME$DNAME
 
 echo
 echo -e "${GREEN} Run to configure${NC} config.php ${GREEN}if using only domain name:${NC} $DNAME"
+echo
 echo sudo sed -i "s|'overwrite.cli.url' => 'http://localhost',|'overwrite.cli.url' => 'https://$DNAME', 'overwritehost' => '$DNAME', 'overwriteprotocol' => 'https',|g" "$CONFIG_PATH"
 echo
+echo
 echo -e "${GREEN} Run to configure${NC} config.php ${GREEN}if using subdomain:${NC} $SDNAME$DNAME"
+echo
 echo sudo sed -i "s|'overwrite.cli.url' => 'http://localhost',|'overwrite.cli.url' => 'https://${FULL_DOMAIN}', 'overwritehost' => '${FULL_DOMAIN}', 'overwriteprotocol' => 'https',|g" "$CONFIG_PATH"
 echo
 
