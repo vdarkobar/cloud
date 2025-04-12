@@ -39,9 +39,12 @@ DEFAULT_IMAGE_URL="https://cloud.debian.org/images/cloud/bookworm/latest/debian-
 # Check if libguestfs-tools is installed
 if ! dpkg -l | grep -q libguestfs-tools; then
    echo -e "${WHITE}[INFO] ${GREEN}libguestfs-tools is not installed. Installing it now...${WHITE}"
+   echo
+   sleep 1
    apt-get update -qq
    apt-get install -y libguestfs-tools
    echo -e "${WHITE}[INFO] ${GREEN}libguestfs-tools has been installed.${WHITE}"
+   echo
 else
    echo -e "${WHITE}[INFO] ${GREEN}libguestfs-tools is already installed.${WHITE}"
    echo
@@ -321,6 +324,7 @@ qm template "$VM_ID"
 
 if [ $? -eq 0 ]; then
     echo -e " ${GREEN}VM ${WHITE}$VM_ID ($HOSTNAME) ${GREEN}successfully converted to Template.${WHITE}"
+    echo
 else
     echo -e "${RED}Failed to convert VM $VM_ID to Template.${WHITE}"
     exit 1
