@@ -2,26 +2,19 @@
 
 clear
 
-#####################################################################
-# Define ANSI escape sequence for green, red, yellow and white font #
-#####################################################################
+#########################################################################
+# Define ANSI escape sequences for colored fonts (green, red, yellow, etc.) #
+#########################################################################
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
+NC='\033[0m' # No Color
 
-
-########################################################
-# Define ANSI escape sequence to reset font to default #
-########################################################
-
-NC='\033[0m'
-
-
-#################
-# Intro message #
-#################
+##################
+# Intro message  #
+##################
 
 echo
 echo -e "${GREEN} Proxmox VE:${NC}"
@@ -29,10 +22,9 @@ sleep 1
 echo -e "${GREEN} The script generates a new Debian LXC Template and sets up a non-root user to improve security.${NC}"
 echo
 
-
-###############################################
-# Gathering storage information for templates #
-###############################################
+#############################################################
+# Gathering storage information for the Debian LXC Template #
+#############################################################
 
 template_storage_list=$(pvesm status -content vztmpl | awk 'NR>1 {print NR-1 " " $1}')
 if [ -z "$template_storage_list" ]; then
@@ -81,10 +73,9 @@ while true; do
     fi
 done
 
-
-############################
-# Determining Container ID #
-############################
+##############################
+# Determining Container ID   #
+##############################
 
 NEXT_CONTAINER_ID=$(pvesh get /cluster/nextid)
 if [ $? -ne 0 ] || [ -z "$NEXT_CONTAINER_ID" ]; then
@@ -99,13 +90,11 @@ read -r CONTAINER_ID
 CONTAINER_ID="${CONTAINER_ID:-$NEXT_CONTAINER_ID}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected Container ID:${WHITE} $CONTAINER_ID"
 
-
-########################
-# Determining Hostname #
-########################
+##########################
+# Determining Hostname   #
+##########################
 
 reserved_names=("localhost" "domain" "local" "host" "broadcasthost" "localdomain" "loopback" "wpad" "gateway" "dns" "mail" "ftp" "web")
-
 is_reserved_name() {
     local input_name=$1
     for name in "${reserved_names[@]}"; do
@@ -115,15 +104,12 @@ is_reserved_name() {
     done
     return 1
 }
-
 DEFAULT_HOSTNAME="deblxc"
-
 while true; do
     echo
     echo -ne "${WHITE}[INFO] ${YELLOW}Enter hostname for the container [default: $DEFAULT_HOSTNAME]:${WHITE} "
     read -r HOSTNAME
     HOSTNAME="${HOSTNAME:-$DEFAULT_HOSTNAME}"
-
     if is_reserved_name "$HOSTNAME"; then
         echo -e "${WHITE}[ERROR] ${RED}Invalid hostname. Reserved name.${WHITE}"
     elif [[ "$HOSTNAME" =~ ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$ ]]; then
@@ -134,12 +120,10 @@ while true; do
     fi
 done
 
+########################################
+# Gathering non-root user information  #
+########################################
 
-################################
-# Gathering non-root user data #
-################################
-
-# User name
 while true; do
     echo
     echo -ne "${WHITE}[INFO] ${YELLOW}Enter username for a non-root user:${WHITE} "
@@ -158,7 +142,6 @@ while true; do
     fi
 done
 
-# Password
 while true; do
     echo
     echo -ne "${WHITE}[INFO] ${YELLOW}Enter password for user '${username}':${WHITE} "
@@ -179,10 +162,34 @@ while true; do
     fi
 done
 
+#########################################################
+# Bridge Selection: Determining Template Network Bridge #
+#########################################################
 
-#######################################
-# Obtaining lates Debian LXC Template #
-#######################################
+echo
+echo -e "${WHITE}[INFO] ${YELLOW}Available network bridges:${WHITE}"
+AVAILABLE_BRIDGES=$(ip -o link show | awk -F': ' '{print $2}' | grep '^vmbr')
+if [ -z "$AVAILABLE_BRIDGES" ]; then
+    echo -e "${WHITE}[ERROR] ${RED}No network bridges found. Please ensure bridges are configured.${WHITE}"
+    exit 1
+fi
+
+echo "$AVAILABLE_BRIDGES" | nl -s ') '
+DEFAULT_BRIDGE="vmbr0"
+echo -ne "${GREEN}Enter network bridge [default: $DEFAULT_BRIDGE]: ${WHITE}"
+read BRIDGE_SELECTION
+BRIDGE_SELECTION="${BRIDGE_SELECTION:-$DEFAULT_BRIDGE}"
+
+if [[ "$BRIDGE_SELECTION" =~ ^[0-9]+$ ]]; then
+    BRIDGE=$(echo "$AVAILABLE_BRIDGES" | sed -n "${BRIDGE_SELECTION}p")
+else
+    BRIDGE="$BRIDGE_SELECTION"
+fi
+echo -e "${WHITE}[INFO] ${GREEN}Selected network bridge:${WHITE} $BRIDGE"
+
+################################################################
+# Obtaining the latest Debian LXC Template and creating container #
+################################################################
 
 # Update template list
 echo
@@ -195,7 +202,6 @@ echo
 
 # Retrieve the latest Debian LXC template name
 latest_debian_template=$(pveam available --section system | awk '/debian/ {print $2}' | sort -V | tail -n 1)
-
 if [ -z "$latest_debian_template" ]; then
     echo -e "${RED} No Debian templates available for download. Please check your Proxmox repository settings or network connection.${NC}"
     exit 1
@@ -212,27 +218,23 @@ echo
 echo -e "${GREEN} Template${NC} $latest_debian_template ${GREEN}downloaded successfully to${NC} $template_storage${NC}"
 echo
 
-# Assume $latest_debian_template is defined elsewhere in the script
 echo -e "${YELLOW} Searching for the Debian template in the filesystem...${NC}"
 template_path=$(find / -name "$latest_debian_template" 2>/dev/null)
-
-# Check if the find command was successful and if the template path is not empty
 if [ -z "$template_path" ]; then
-    echo -e "${RED} Failed to locate the template:${NC}" $latest_debian_template
+    echo -e "${RED} Failed to locate the template:${NC} $latest_debian_template"
     echo -e "${RED} Please check the template name and ensure it has been downloaded.${NC}"
     exit 1
 fi
 
 echo
-echo -e "${GREEN} Template located at:${NC}" $template_path
+echo -e "${GREEN} Template located at:${NC} $template_path"
 echo
-
 
 #########################
 # Creating LXC Template #
 #########################
 
-# Creating the LXC container with the specified parameters
+# Creating the LXC container with the specified parameters. Note the bridge is now dynamic.
 pct create $CONTAINER_ID $template_path \
     --arch amd64 \
     --ostype debian \
@@ -242,13 +244,12 @@ pct create $CONTAINER_ID $template_path \
     --password $password \
     --ignore-unpack-errors \
     --ssh-public-keys /root/.ssh/authorized_keys \
-    --ostype debian \
     --storage $rootfs_storage \
     --rootfs $rootfs_storage:8 \
     --cores 4 \
     --memory 4096 \
     --swap 512 \
-    --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp \
+    --net0 name=eth0,bridge=$BRIDGE,firewall=1,ip=dhcp \
     --start 1
 
 # Allow the container to initialize
@@ -272,16 +273,6 @@ echo
 echo -e "${WHITE}[INFO] ${GREEN}Locale configuration completed successfully.${WHITE}"
 echo
 
-# Set timezone to Europe/Berlin
-#echo
-#echo -e "${WHITE}[INFO] ${YELLOW}Setting the timezone to Europe/Berlin...${WHITE}"
-#pct exec $CONTAINER_ID -- bash -c "
-#    ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime && \
-#    echo 'Europe/Berlin' > /etc/timezone
-#"
-#echo -e "${WHITE}[INFO] ${GREEN}Timezone set to Europe/Berlin successfully.${WHITE}"
-#echo
-
 # Add user and configure the container
 pct exec $CONTAINER_ID -- bash -c "
 apt-get install -y sudo cloud-init && \
@@ -296,17 +287,13 @@ pct exec $CONTAINER_ID -- systemctl enable cloud-init
 pct exec $CONTAINER_ID -- systemctl enable cloud-config
 pct exec $CONTAINER_ID -- systemctl enable cloud-final
 
-# Provide a Cloud-Init user-data file that instructs Cloud-Init to regenerate SSH keys
+# Provide a Cloud-Init user-data file to regenerate SSH keys
 pct exec $CONTAINER_ID -- bash -c "mkdir -p /var/lib/cloud/seed/nocloud"
-
-# Insert a minimal Cloud-Init configuration that deletes old keys and generates new ones
 pct exec $CONTAINER_ID -- bash -c 'cat > /var/lib/cloud/seed/nocloud/user-data <<EOF
 #cloud-config
 ssh_deletekeys: true
 ssh_genkeytypes: [ "rsa", "ecdsa", "ed25519" ]
 EOF'
-
-# Insert an empty meta-data file (required by NoCloud datasource)
 pct exec $CONTAINER_ID -- bash -c "touch /var/lib/cloud/seed/nocloud/meta-data"
 
 # Prepare the container for template conversion
@@ -322,7 +309,7 @@ DEBIAN_VERSION=$(pct exec $CONTAINER_ID -- cat /etc/debian_version)
 TAGS="lxc, template, debian$DEBIAN_VERSION"
 echo "tags: $TAGS" >> /etc/pve/lxc/$CONTAINER_ID.conf
 
-# Add a description
+# Add a description for the template
 echo 'description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/><br>' >> /etc/pve/lxc/$CONTAINER_ID.conf
 
 echo
@@ -338,3 +325,4 @@ else
     echo -e "${RED}Failed to convert container $CONTAINER_ID ($HOSTNAME) to Template.${NC}"
     exit 1
 fi
+echo
