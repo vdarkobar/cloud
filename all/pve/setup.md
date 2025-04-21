@@ -138,7 +138,7 @@ zfs destroy <pool_name>
 zfs destroy <pool_name>/<dataset_name>
 ```
   
-Add storage to Proxmox (under same pool)  
+##Add storage to Proxmox (under same pool)  
 Create new datasets under zfs and mount them to system:
 ```
 zfs create <pool_name>/<datase_name> -o mountpoint=/mnt/<datase_name>
