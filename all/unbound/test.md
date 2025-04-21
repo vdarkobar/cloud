@@ -80,6 +80,8 @@ server:
   # enable to not answer id.server and hostname.bind queries.
     hide-identity: yes
 ```
+
+```
   # enable to not answer version.server and version.bind queries.
     hide-version: yes
 ```
