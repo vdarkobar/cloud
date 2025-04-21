@@ -1,10 +1,8 @@
 
-`
+```
 ## Authoritative, validating, recursive caching DNS
 ## 
 #
-`
-```
 server:
   # log verbosity
     verbosity: 1
@@ -14,40 +12,45 @@ server:
     directory: "/etc/unbound"
     tls-cert-bundle: /etc/ssl/certs/ca-certificates.crt
 ```
-# Send minimal amount of information to upstream servers to enhance privacy
+
 ```
+# Send minimal amount of information to upstream servers to enhance privacy
+
     qname-minimisation: yes
+```
+
 ```
   # specify the interfaces to answer queries from by ip-address.  The default
   # is to listen to localhost (127.0.0.1 and ::1).  specify 0.0.0.0 and ::0 to
   # bind to all available interfaces.  specify every interface[@port] on a new
   # 'interface:' labeled line.  The listen interfaces are not changed on
   # reload, only on restart.
-  ```
     interface: 127.0.0.1
 ```
-  # port to answer queries from
 ```
+  # port to answer queries from
     port: 53
 ```
-  # Enable IPv4, "yes" or "no".
 ```
+  # Enable IPv4, "yes" or "no".
     do-ip4: yes
 ```
-  # Enable IPv6, "yes" or "no".
 ```
+  # Enable IPv6, "yes" or "no".
     do-ip6: no
 ```
-  # Enable UDP, "yes" or "no".
 ```
+  # Enable UDP, "yes" or "no".
     do-udp: yes
+```
 ```
   # Enable TCP, "yes" or "no". If TCP is not needed, Unbound is actually
   # quicker to resolve as the functions related to TCP checks are not done.i
   # NOTE: you may need tcp enabled to get the DNSSEC results from *.edu domains
   # due to their size.
     do-tcp: yes
-
+```
+```
   # control which client ips are allowed to make (recursive) queries to this
   # server. Specify classless netblocks with /size and action.  By default
   # everything is refused, except for localhost.  Choose deny (drop message),
@@ -57,17 +60,19 @@ server:
     access-control: 127.0.0.0/8 allow
     access-control: 192.168.0.0/16 allow
     #access-control: ::1 allow
-
+```
+```
   # Read  the  root  hints from this file. Default is nothing, using built in
   # hints for the IN class. The file has the format of  zone files,  with  root
   # nameserver  names  and  addresses  only. The default may become outdated,
   # when servers change,  therefore  it is good practice to use a root-hints
   # file.  get one from https://www.internic.net/domain/named.root 
   # root-hints: "/var/unbound/etc/root.hints"
-
+```
+```
   # enable to not answer id.server and hostname.bind queries.
     hide-identity: yes
-
+```
   # enable to not answer version.server and version.bind queries.
     hide-version: yes
 
