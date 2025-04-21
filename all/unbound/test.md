@@ -1,8 +1,9 @@
 
-
+`
 ## Authoritative, validating, recursive caching DNS
 ## 
 #
+`
 ```
 server:
   # log verbosity
