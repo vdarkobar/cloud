@@ -1,0 +1,148 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Enhanced non-interactive updater for Proxmox VE LXC containers
+# Inlined logic: no functions, full comments for clarity
+
+# Maximum parallel updates
+max_jobs=4
+# Prefix for snapshots
+snap_prefix="pre-update"
+# Temporary file to record containers needing reboot
+reboot_file=$(mktemp)
+# Flag to stop scheduling new jobs on signal
+stop=false
+
+# Trap SIGINT/SIGTERM to allow graceful shutdown of pending jobs
+trap 'stop=true; echo -e "\n[WARN] Signal received; no new updates will start."' SIGINT SIGTERM
+
+# Retrieve all container IDs (skip header)
+containers=( $(pct list | awk 'NR>1{print $1}') )
+
+# Iterate over each container
+for ct in "${containers[@]}"; do
+  # Break if stop flag is set
+  $stop && break
+
+  # Concurrency control: wait while running jobs ≥ max_jobs
+  while [ "$(jobs -rp | wc -l)" -ge "$max_jobs" ]; do
+    sleep 1
+  done
+
+  # Process each container in background
+  {
+    # Skip template containers
+    if pct config "$ct" 2>/dev/null | grep -qE '^template:\s*1$'; then
+      echo -e "\n[INFO] Skipping template CT $ct"
+      exit 0
+    fi
+
+    # Capture and log initial status
+    initial_status=$(pct status "$ct" | awk '{print $2}')
+    echo -e "\n[INFO] CT $ct initial status: ${initial_status}"
+    started=false
+    if [ "$initial_status" = "stopped" ]; then
+      echo -e "\n[INFO] Starting CT $ct"
+      pct start "$ct"
+      sleep 5
+      started=true
+    fi
+
+    # Health check: root filesystem usage
+    root_usage=$(pct exec "$ct" -- df / --output=pcent | tail -1 | tr -dc '0-9')
+    if [ "$root_usage" -ge 90 ]; then
+      echo -e "\n[SKIP] CT $ct: root usage ${root_usage}% >= 90%"
+      $started && pct shutdown "$ct"
+      exit 0
+    fi
+
+    # Health check: /boot usage
+    boot_usage=$(pct exec "$ct" -- df /boot --output=pcent 2>/dev/null | tail -1 | tr -dc '0-9' || echo 0)
+    if [ "$boot_usage" -ge 90 ]; then
+      echo -e "\n[SKIP] CT $ct: /boot usage ${boot_usage}% >= 90%"
+      $started && pct shutdown "$ct"
+      exit 0
+    fi
+
+    # Health check: free memory
+    mem_free=$(pct exec "$ct" -- free -m | awk '/^Mem:/ {print $4}')
+    if [ "$mem_free" -lt 100 ]; then
+      echo -e "\n[SKIP] CT $ct: free memory ${mem_free}MB < 100MB"
+      $started && pct shutdown "$ct"
+      exit 0
+    fi
+
+    # Create snapshot before update
+    snap_name="${snap_prefix}-$(date +%Y%m%d%H%M%S)"
+    echo -e "\n[INFO] Creating snapshot '$snap_name' for CT $ct"
+    pct snapshot "$ct" "$snap_name"
+
+    # Detect OS and log update intent
+    os=$(pct config "$ct" | awk '/^ostype/ {print $2}')
+    echo -e "\n[INFO] Updating CT $ct (OS=${os}), initial status=${initial_status}"
+    echo
+
+    # Inline retry logic: up to 3 attempts
+    attempts=0
+    success=false
+    until [ "$attempts" -ge 3 ]; do
+      attempts=$((attempts+1))
+      case "$os" in
+        alpine)
+          pct exec "$ct" -- sh -c 'apk update && apk upgrade --available' && success=true
+          ;;
+        archlinux)
+          pct exec "$ct" -- sh -c 'pacman -Syyu --noconfirm' && success=true
+          ;;
+        fedora|centos|rocky|alma)
+          pct exec "$ct" -- sh -c 'dnf -y upgrade' && success=true
+          ;;
+        ubuntu|debian|devuan)
+          pct exec "$ct" -- sh -c 'apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade' && success=true
+          ;;
+        opensuse)
+          pct exec "$ct" -- sh -c 'zypper refresh && zypper --non-interactive dup' && success=true
+          ;;
+        *)
+          echo -e "\n[SKIP] CT $ct: unsupported OS '${os}'"
+          break
+          ;;
+      esac
+      if [ "$success" = true ]; then
+        break
+      fi
+      echo -e "\n[WARN] Attempt ${attempts}/3 for CT $ct failed. Retrying in 5s..."
+      sleep 5
+    done
+
+    # Final retry failure handling
+    if [ "$success" = false ]; then
+      echo -e "\n[ERROR] Updates for CT $ct failed after 3 attempts. Skipping."
+    fi
+
+    # Record reboot requirement
+    if pct exec "$ct" -- test -f /var/run/reboot-required; then
+      echo -e "\n[RESULT] CT $ct requires reboot" >> "$reboot_file"
+    fi
+
+    # Shutdown container if it was started by us
+    if [ "$started" = true ]; then
+      echo -e "\n[INFO] Shutting down CT $ct"
+      pct shutdown "$ct"
+    fi
+  } &
+done
+
+# Wait for all background jobs to finish
+wait
+
+# Print summary of containers needing reboot
+if [ -s "$reboot_file" ]; then
+  echo -e "\n[RESULT] Containers requiring reboot:" 
+  sort -u "$reboot_file"
+else
+  echo -e "\n[RESULT] No reboots needed."
+fi
+
+# Clean up temporary file
+rm -f "$reboot_file"
