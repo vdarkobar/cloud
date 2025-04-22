@@ -29,14 +29,18 @@
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup1.sh)"
 ```
+
+</br>
+
 ### 2. *Debian LXC Template <a href="https://github.com/vdarkobar/cloud/blob/main/all/debct/setup.md"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup2.sh)"
 ```
-### 2-1. *Update all LXC Containers <a href="https://github.com/vdarkobar/cloud/blob/main/all/debct/setup.md"> * </a>*:
+#### *Update all LXC Containers <a href="https://github.com/vdarkobar/cloud/blob/main/all/debct/setup.md"> * </a>*:
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup2-1.sh)"
 ```
+
 </br>
 
 ### 3. *Bastion/Jump <a href="https://github.com/vdarkobar/cloud/blob/main/all/jump/setup.md"> * </a>*:
