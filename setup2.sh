@@ -50,7 +50,7 @@ while true; do
 done
 
 # Get storage information for rootfs
-rootfs_storage_list=$(pvesm status -content images | awk 'NR>1 {print NR-1 " " $1}')
+rootfs_storage_list=$(pvesm status -content rootdir | awk 'NR>1 {print NR-1 " " $1}')
 if [ -z "$rootfs_storage_list" ]; then
     echo -e "${RED} No storage found or failed to retrieve storage status.${NC}"
     exit 1
