@@ -35,7 +35,7 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/se
 ```
 ### 2-1. *Update all LXC Containers <a href="https://github.com/vdarkobar/cloud/blob/main/all/debct/setup.md"> * </a>*:
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/refs/heads/main/all/debct/setup2-1.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/setup2-1.sh)"
 ```
 </br>
 
