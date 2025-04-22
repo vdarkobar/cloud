@@ -12,9 +12,9 @@ YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
 NC='\033[0m' # No Color
 
-##################
-# Intro message  #
-##################
+#################
+# Intro message #
+#################
 
 echo
 echo -e "${GREEN} Proxmox VE:${NC}"
@@ -73,9 +73,9 @@ while true; do
     fi
 done
 
-##############################
-# Determining Container ID   #
-##############################
+############################
+# Determining Container ID #
+############################
 
 NEXT_CONTAINER_ID=$(pvesh get /cluster/nextid)
 if [ $? -ne 0 ] || [ -z "$NEXT_CONTAINER_ID" ]; then
@@ -90,9 +90,9 @@ read -r CONTAINER_ID
 CONTAINER_ID="${CONTAINER_ID:-$NEXT_CONTAINER_ID}"
 echo -e "${WHITE}[INFO] ${GREEN}Selected Container ID:${WHITE} $CONTAINER_ID"
 
-##########################
-# Determining Hostname   #
-##########################
+########################
+# Determining Hostname #
+########################
 
 reserved_names=("localhost" "domain" "local" "host" "broadcasthost" "localdomain" "loopback" "wpad" "gateway" "dns" "mail" "ftp" "web")
 is_reserved_name() {
@@ -120,9 +120,9 @@ while true; do
     fi
 done
 
-########################################
-# Gathering non-root user information  #
-########################################
+#######################################
+# Gathering non-root user information #
+#######################################
 
 while true; do
     echo
@@ -187,9 +187,9 @@ else
 fi
 echo -e "${WHITE}[INFO] ${GREEN}Selected network bridge:${WHITE} $BRIDGE"
 
-################################################################
+###################################################################
 # Obtaining the latest Debian LXC Template and creating container #
-################################################################
+###################################################################
 
 # Update template list
 echo
@@ -305,8 +305,198 @@ touch /etc/machine-id && \
 truncate -s 0 /var/log/*log
 "
 
+############
+# LXC Tags #
+############
+
+# LXC IP-Tag for running containers
+# Proxmox version check
+if ! pveversion | grep -Eq 'pve-manager/8\.[0-9]+'; then
+  echo "[ERROR] Requires Proxmox VE 8.x or later."
+  exit 1
+fi
+
+# guard against re-install
+FILE_PATH="/opt/lxc-iptag/iptag"
+if [[ -f "$FILE_PATH" ]]; then
+  echo "Already installed at ${FILE_PATH}; skipping."
+  exit 0
+fi
+
+# install dependencies
+apt-get install -y ipcalc net-tools -qq
+
+# setup directories
+mkdir -p /opt/lxc-iptag
+
+# default config
+CONFIG_FILE="/opt/lxc-iptag/iptag.conf"
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  cat <<EOF > "$CONFIG_FILE"
+# Configuration for LXC IP tagging
+
+# Allowed CIDRs
+CIDR_LIST=(
+  192.168.0.0/16
+  172.16.0.0/12
+  10.0.0.0/8
+)
+
+# Timing intervals (seconds)
+LOOP_INTERVAL=30
+FW_NET_INTERFACE_CHECK_INTERVAL=60
+LXC_STATUS_CHECK_INTERVAL=60
+FORCE_UPDATE_INTERVAL=3600
+EOF
+  # echo "Default config written."
+else
+  echo "Config already exists; skipping."
+fi
+
+# main script
+IPTAG_SCRIPT="/opt/lxc-iptag/iptag"
+cat <<'EOF' > "$IPTAG_SCRIPT"
+#!/usr/bin/env bash
+# LXC IP-Tag main logic
+
+# Load configuration
+source /opt/lxc-iptag/iptag.conf
+
+# Convert dotted IP to integer
+ip_to_int() {
+  IFS=. read -r a b c d <<< "$1"
+  echo $((a<<24 | b<<16 | c<<8 | d))
+}
+
+# Test single CIDR membership
+ip_in_cidr() {
+  local ip_int=$(ip_to_int "$1")
+  local mask=$(ipcalc -b "$2" | awk '/Broadcast/ {print $2}')
+  local net_int=$(ip_to_int "$mask")
+  (( (ip_int & net_int) == ip_int ))
+}
+
+# Test any CIDR in list
+ip_in_cidrs() {
+  for cidr in "${CIDR_LIST[@]}"; do
+    ip_in_cidr "$1" "$cidr" && return 0
+  done
+  return 1
+}
+
+# Validate IPv4 format
+is_valid_ipv4() {
+  local ip=$1
+  [[ $ip =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]] || return 1
+  IFS=. read -r -a parts <<< "$ip"
+  for part in "${parts[@]}"; do
+    (( part>=0 && part<=255 )) || return 1
+  done
+  return 0
+}
+
+# Detect changes in LXC list
+lxc_status_changed() {
+  local current=$(pct list 2>/dev/null)
+  [[ "$current" != "${last_lxc_status:-}" ]]
+  last_lxc_status="$current"
+}
+
+# Detect changes in firewall interface list
+fw_net_interface_changed() {
+  local current=$(ifconfig | grep '^fw')
+  [[ "$current" != "${last_net_interface:-}" ]]
+  last_net_interface="$current"
+}
+
+# Update container tags to match valid IPs
+update_lxc_iptags() {
+  for vmid in $(pct list 2>/dev/null | awk 'NR>1 {print $1}'); do
+    # collect old valid IP tags
+    local old_ips=() new_tags=()
+    mapfile -t tags < <(pct config "$vmid" | awk '/tags/ {print $2}' | tr ';' '\n')
+    for tag in "${tags[@]}"; do
+      is_valid_ipv4 "$tag" && old_ips+=("$tag") && continue
+      new_tags+=("$tag")
+    done
+
+    # collect current valid IPs
+    for ip in $(lxc-info -n "$vmid" -i | awk '{print $2}'); do
+      if is_valid_ipv4 "$ip" && ip_in_cidrs "$ip"; then
+        new_tags+=("$ip")
+      fi
+    done
+
+    # skip if no change
+    if [[ "$(printf '%s\n' "${old_ips[@]}" | sort -u)" == "$(printf '%s\n' "${new_tags[@]}" | sort -u)" ]]; then
+      continue
+    fi
+
+    # apply new tags
+    pct set "$vmid" -tags "$(IFS=';'; echo "${new_tags[*]}")"
+  done
+}
+
+# Periodic checks and forced update
+check() {
+  local now=$(date +%s)
+
+  if (( LXC_STATUS_CHECK_INTERVAL>0 && now - last_lxc_check >= LXC_STATUS_CHECK_INTERVAL )); then
+    last_lxc_check=$now
+    lxc_status_changed && update_lxc_iptags && last_update=$now
+    return
+  fi
+
+  if (( FW_NET_INTERFACE_CHECK_INTERVAL>0 && now - last_net_check >= FW_NET_INTERFACE_CHECK_INTERVAL )); then
+    last_net_check=$now
+    fw_net_interface_changed && update_lxc_iptags && last_update=$now
+    return
+  fi
+
+  if (( now - last_update >= FORCE_UPDATE_INTERVAL )); then
+    update_lxc_iptags
+    last_update=$now
+  fi
+}
+
+main() {
+  last_lxc_check=0
+  last_net_check=0
+  last_update=0
+  while true; do
+    check
+    sleep "$LOOP_INTERVAL"
+  done
+}
+
+main
+EOF
+
+chmod +x "$IPTAG_SCRIPT"
+
+# systemd service
+SERVICE_FILE="/etc/systemd/system/iptag.service"
+cat <<EOF > "$SERVICE_FILE"
+[Unit]
+Description=LXC IP-Tag service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=$IPTAG_SCRIPT
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# enable and start
+systemctl daemon-reload
+systemctl enable --now iptag.service
+
+# Set default Tags (comma separated for more tags)
 DEBIAN_VERSION=$(pct exec $CONTAINER_ID -- cat /etc/debian_version)
-TAGS="lxc, template, debian$DEBIAN_VERSION"
+TAGS="lxc, debian$DEBIAN_VERSION"
 echo "tags: $TAGS" >> /etc/pve/lxc/$CONTAINER_ID.conf
 
 # Add a description for the template
