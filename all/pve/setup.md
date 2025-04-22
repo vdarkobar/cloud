@@ -143,6 +143,25 @@ Create new datasets under zfs and mount them to system:
 ```
 zfs create <pool_name>/<datase_name> -o mountpoint=/mnt/<datase_name>
 ```
+
+## Example for Proxmox storaga  
+  
+vm disks (no need for mountpoint (zvol > /dev/zvol/data/vm/))
+```
+zfs create data/vm
+```
+ct volumes (no need for mountpoint (zvol > /dev/zvol/data/ct/))
+```
+zfs create data/ct
+```
+iso (iso images and container templates, dir > no need for mountpoint) 
+```
+zfs create data/iso
+```
+backup (vm and ct backups, dir > no need for mountpoint) 
+```
+zfs create data/bak
+```
   
 The snapshot entry is stored in the /etc/pve/qemu-server/<vmid>.conf file of your VM, you can delete the entry by hand:
   
