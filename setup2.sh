@@ -316,23 +316,18 @@ if ! pveversion | grep -Eq 'pve-manager/8\.[0-9]+'; then
   exit 1
 fi
 
-# guard against re-install
 FILE_PATH="/opt/lxc-iptag/iptag"
-if [[ -f "$FILE_PATH" ]]; then
-  echo "Already installed at ${FILE_PATH}; skipping."
-  exit 0
-fi
+if [[ ! -f "$FILE_PATH" ]]; then
+  # install dependencies
+  apt-get install -y ipcalc net-tools -qq
 
-# install dependencies
-apt-get install -y ipcalc net-tools -qq
+  # setup directories
+  mkdir -p /opt/lxc-iptag
 
-# setup directories
-mkdir -p /opt/lxc-iptag
-
-# default config
-CONFIG_FILE="/opt/lxc-iptag/iptag.conf"
-if [[ ! -f "$CONFIG_FILE" ]]; then
-  cat <<EOF > "$CONFIG_FILE"
+  # default config
+  CONFIG_FILE="/opt/lxc-iptag/iptag.conf"
+  if [[ ! -f "$CONFIG_FILE" ]]; then
+    cat <<EOF > "$CONFIG_FILE"
 # Configuration for LXC IP tagging
 
 # Allowed CIDRs
@@ -348,14 +343,14 @@ FW_NET_INTERFACE_CHECK_INTERVAL=60
 LXC_STATUS_CHECK_INTERVAL=60
 FORCE_UPDATE_INTERVAL=3600
 EOF
-  # echo "Default config written."
-else
-  echo "Config already exists; skipping."
-fi
+    # echo "Default config written."
+  else
+    echo "Config already exists; skipping."
+  fi
 
-# main script
-IPTAG_SCRIPT="/opt/lxc-iptag/iptag"
-cat <<'EOF' > "$IPTAG_SCRIPT"
+  # main script
+  IPTAG_SCRIPT="/opt/lxc-iptag/iptag"
+  cat <<'EOF' > "$IPTAG_SCRIPT"
 #!/usr/bin/env bash
 # LXC IP-Tag main logic
 
@@ -472,11 +467,11 @@ main() {
 main
 EOF
 
-chmod +x "$IPTAG_SCRIPT"
+  chmod +x "$IPTAG_SCRIPT"
 
-# systemd service
-SERVICE_FILE="/etc/systemd/system/iptag.service"
-cat <<EOF > "$SERVICE_FILE"
+  # systemd service
+  SERVICE_FILE="/etc/systemd/system/iptag.service"
+  cat <<EOF > "$SERVICE_FILE"
 [Unit]
 Description=LXC IP-Tag service
 After=network.target
@@ -490,13 +485,16 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-# enable and start
-systemctl daemon-reload
-systemctl enable --now iptag.service
+  # enable and start
+  systemctl daemon-reload
+  systemctl enable --now iptag.service
+else
+  echo "Already installed at ${FILE_PATH}; skipping installation."
+fi
 
 # Set default Tags (comma separated for more tags)
 DEBIAN_VERSION=$(pct exec $CONTAINER_ID -- cat /etc/debian_version)
-TAGS="lxc, debian$DEBIAN_VERSION"
+TAGS="lxc;debian$DEBIAN_VERSION"
 echo "tags: $TAGS" >> /etc/pve/lxc/$CONTAINER_ID.conf
 
 # Add a description for the template
