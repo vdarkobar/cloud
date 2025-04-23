@@ -2,8 +2,6 @@
 set -euo pipefail
 
 # Enhanced non-interactive updater for Proxmox VE LXC containers
-# Inlined logic: no functions
-# Full comments for clarity
 
 # Maximum parallel updates
 max_jobs=4
