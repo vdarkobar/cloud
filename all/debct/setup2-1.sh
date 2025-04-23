@@ -5,7 +5,6 @@ set -euo pipefail
 # Inlined logic: no functions, full comments for clarity
 
 # Maximum parallel updates (configurable via environment variable)
-# MAX_JOBS=8 ./lxc-updater.sh (single run)
 max_jobs=${MAX_JOBS:-4}
 # Prefix for snapshots (configurable via environment variable)
 snap_prefix=${SNAP_PREFIX:-"pre-update"}
