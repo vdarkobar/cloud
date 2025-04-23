@@ -38,7 +38,11 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/se
 ```
 #### *Update all LXC Containers*:
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/all/debct/setup2*.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/all/debct/setup2-1.sh)"
+```
+#### *LXC-IP uninstaller*:
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/all/debct/setup2-2.sh)"
 ```
 
 </br>
