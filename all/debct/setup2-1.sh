@@ -2,13 +2,17 @@
 set -euo pipefail
 
 # Enhanced non-interactive updater for Proxmox VE LXC containers
+# Inlined logic: no functions, full comments for clarity
 
-# Maximum parallel updates
-max_jobs=4
-# Prefix for snapshots
-snap_prefix="pre-update"
+# Maximum parallel updates (configurable via environment variable)
+# MAX_JOBS=8 ./lxc-updater.sh (single run)
+max_jobs=${MAX_JOBS:-4}
+# Prefix for snapshots (configurable via environment variable)
+snap_prefix=${SNAP_PREFIX:-"pre-update"}
 # Temporary file to record containers needing reboot
 reboot_file=$(mktemp)
+# Ensure temporary file is cleaned up on exit
+trap 'rm -f "$reboot_file"' EXIT
 # Flag to stop scheduling new jobs on signal
 stop=false
 
@@ -42,8 +46,21 @@ for ct in "${containers[@]}"; do
     started=false
     if [ "$initial_status" = "stopped" ]; then
       echo -e "\n[INFO] Starting CT $ct"
-      pct start "$ct"
-      sleep 5
+      if ! pct start "$ct"; then
+        echo -e "\n[ERROR] Failed to start CT $ct. Skipping."
+        exit 1
+      fi
+      # Wait up to 30 seconds for container to start
+      for i in {1..30}; do
+        if [ "$(pct status "$ct" | awk '{print $2}')" = "running" ]; then
+          break
+        fi
+        sleep 1
+      done
+      if [ "$(pct status "$ct" | awk '{print $2}')" != "running" ]; then
+        echo -e "\n[ERROR] CT $ct did not start within 30 seconds. Skipping."
+        exit 1
+      fi
       started=true
     fi
 
@@ -74,7 +91,11 @@ for ct in "${containers[@]}"; do
     # Create snapshot before update
     snap_name="${snap_prefix}-$(date +%Y%m%d%H%M%S)"
     echo -e "\n[INFO] Creating snapshot '$snap_name' for CT $ct"
-    pct snapshot "$ct" "$snap_name"
+    if ! pct snapshot "$ct" "$snap_name"; then
+      echo -e "\n[ERROR] Failed to create snapshot for CT $ct. Skipping update."
+      $started && pct shutdown "$ct"
+      exit 1
+    fi
 
     # Detect OS and log update intent
     os=$(pct config "$ct" | awk '/^ostype/ {print $2}')
@@ -142,6 +163,3 @@ if [ -s "$reboot_file" ]; then
 else
   echo -e "\n[RESULT] No reboots needed."
 fi
-
-# Clean up temporary file
-rm -f "$reboot_file"
