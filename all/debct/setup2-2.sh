@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Uninstall script for LXC IP-Tag service and associated files
-# Stops and disables the systemd service, removes unit files,
-# deletes installed scripts, and cleans up logs/symlinks.
+# Stops and disables the systemd service, removes unit files
+# Deletes installed scripts, and cleans up logs/symlinks.
 
 set -Eeuo pipefail
 trap 'echo -e "\n[ERROR] on line $LINENO: $BASH_COMMAND"; exit 1' ERR
