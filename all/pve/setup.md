@@ -4,7 +4,16 @@
 </p> 
   
 ## Proxmox Virtual Environment
-   
+
+</br>
+
+#### *Remove old PVE Kernels*:
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/all/pve/remove-old-kernels.sh)"
+```
+
+</br>
+ 
 Cron expression to update Proxmox every month "At 00:00, on day 1 of the month":
 
 ```
