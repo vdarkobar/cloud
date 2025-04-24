@@ -338,10 +338,10 @@ CIDR_LIST=(
 )
 
 # Timing intervals (seconds)
-LOOP_INTERVAL=30
-FW_NET_INTERFACE_CHECK_INTERVAL=60
-LXC_STATUS_CHECK_INTERVAL=60
-FORCE_UPDATE_INTERVAL=3600
+LOOP_INTERVAL=120           # 2 minutes - Main script loop frequency
+FW_NET_INTERFACE_CHECK_INTERVAL=300  # 5 minutes - Check for firewall interface changes
+LXC_STATUS_CHECK_INTERVAL=-1         # disabled
+FORCE_UPDATE_INTERVAL=7200           # 120 minutes (2 hours) - Force update regardless of changes
 EOF
     # echo "Default config written."
   else
