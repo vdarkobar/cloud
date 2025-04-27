@@ -44,6 +44,10 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/al
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/all/debct/setup2-2.sh)"
 ```
+#### *Delete multiple LXC*:
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/vdarkobar/cloud/main/all/debct/setup2-3.sh)"
+```
 
 </br>
 
