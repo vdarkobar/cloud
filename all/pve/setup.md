@@ -176,6 +176,8 @@ ZFS-Pool Import (*add as storage after import*)
 ```
 zpool import -f <zfs-pool-name>
 ```
+*Use a tool (e.g., SCP, WinSCP) to restore VM/LCX config files to /etc/pve/qemu-server (for VMs) and /etc/pve/lcx (for containers).*
+
   
 The snapshot entry is stored in the /etc/pve/qemu-server/<vmid>.conf file of your VM, you can delete the entry by hand:
 
