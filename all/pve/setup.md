@@ -171,6 +171,11 @@ backup (vm and ct backups (dir > no need for mountpoint))
 ```
 zfs create data/bak
 ```
+
+ZFS-Pool Import (*add as storage after import*)
+```
+zpool import -f <zfs-pool-name>
+```
   
 The snapshot entry is stored in the /etc/pve/qemu-server/<vmid>.conf file of your VM, you can delete the entry by hand:
 
