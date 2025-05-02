@@ -498,10 +498,13 @@ TAGS="lxc;debian$DEBIAN_VERSION"
 echo "tags: $TAGS" >> /etc/pve/lxc/$CONTAINER_ID.conf
 
 # Add a description for the template
-#echo 'description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/><br>' >> /etc/pve/lxc/$CONTAINER_ID.conf
+# assume $CONTAINER_ID is already set
+
+#echo "description: <img src=\"https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true\" alt=\"Debian Logo\"/><br><details><summary>Click to expand</summary>some info here...</details>" \
+#  >> /etc/pve/lxc/${CONTAINER_ID}.conf
 
 cat <<'EOF' >> /etc/pve/lxc/${CONTAINER_ID}.conf
-description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/><br><details><summary>Click to expand</summary>text here</details>
+description: <img src="https://github.com/vdarkobar/cloud/blob/main/misc/debian-logo.png?raw=true" alt="Debian Logo"/><br><details><summary>Click to expand</summary>some info here...</details>
 EOF
 
 echo
