@@ -177,7 +177,37 @@ ZFS-Pool Import (*add as storage after import*)
 zpool import -f <zfs-pool-name>
 ```
 *Use a tool (e.g., SCP, WinSCP) to restore VM/LCX config files to /etc/pve/qemu-server (for VMs) and /etc/pve/lcx (for containers).*
+  
+  
+## Repair degraded pool (example: rpool (mirror))
+pool status
+```
+lsblk -o NAME,SIZE,MODEL
+```
+identify disks (can also use `fdisk -l`)
+```
+lsblk -o NAME,SIZE,MODEL
+```
+clone the GPT from the healthy disk (copy the entire partition table)
+```
+# 1) Copy the entire partition table:
+sgdisk -R=/dev/vdb /dev/vda
 
+# 2) Generate brand-new GUIDs on /dev/vdb (so ZFS sees it as a new device):
+sgdisk -G /dev/vdb
+```
+replace the old (removed) /dev/vdb3 with the new one
+```
+zpool replace rpool /dev/vdb3 /dev/vdb3
+```
+You’ll see a “resilver” in progress
+Note: It looks odd to use vdb3 twice—in ZFS terms, the first is “the missing leaf” (a slot in the mirror) and the second is “the new partition you just created.”
+
+Verify and scrub
+```
+zpool scrub rpool
+zpool status rpool
+```
   
 The snapshot entry is stored in the /etc/pve/qemu-server/<vmid>.conf file of your VM, you can delete the entry by hand:
 
