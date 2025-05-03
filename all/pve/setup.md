@@ -182,7 +182,7 @@ zpool import -f <zfs-pool-name>
 ## Repair degraded pool (example: rpool (mirror))
 pool status
 ```
-lsblk -o NAME,SIZE,MODEL
+zpool status rpool
 ```
 identify disks (can also use `fdisk -l`)
 ```
